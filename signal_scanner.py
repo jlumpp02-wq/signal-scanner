@@ -28,7 +28,7 @@ TOKENS = {
     "ondo-finance": "ONDO",
 }
 
-DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1483586871354462239/PkEp76x8ejyJY7N_-skc6N3Q7YYzUBtPI-H-aX6Uvi3YNPIbuM56URLJuGwAdXW1LMN2"
+DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1483601509210914889/W7KoK4eHaaXbuIHYe9no4IVfYC-Jjg4fsZWpVTRf0znz7ok6yrvsQ5w36EkZinVY1SdZ"
 ALERT_THRESHOLD = 65  # composite score to trigger alert
 SCAN_LOG_FILE = "last_scan.json"
 
