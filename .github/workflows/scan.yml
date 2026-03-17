@@ -2,13 +2,13 @@ name: SignalScanner — Asymmetric Opportunity Bot
 
 on:
   schedule:
-    # Runs every hour — the script itself decides whether to alert
-    # based on signal intensity (adaptive frequency)
     - cron: '0 * * * *'
-  workflow_dispatch:  # Manual trigger
+  workflow_dispatch:
 
 env:
   DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
 
 jobs:
   scan:
