@@ -28,7 +28,7 @@ TOKENS = {
     "ondo-finance": "ONDO",
 }
 
-DISCORD_WEBHOOK = os.environ.get("DISCORD_WEBHOOK", "")
+DISCORD_WEBHOOK = os.environ.get("https://discordapp.com/api/webhooks/1483586732082597989/qaE6-hDPl7k8xzcDXEH5mvAaVDGze5zlY4tzUPWW0keRvWHmMfbAfLz_VYJ6sQx7CTZI")
 ALERT_THRESHOLD = 65  # composite score to trigger alert
 SCAN_LOG_FILE = "last_scan.json"
 
