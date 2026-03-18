@@ -1,17 +1,17 @@
 {
-  "timestamp": "2026-03-18T00:36:20.051097+00:00",
+  "timestamp": "2026-03-18T00:48:14.864314+00:00",
   "market": {
     "fear_greed": {
       "value": 26,
       "label": "Fear"
     },
     "btc": {
-      "price": 73779,
-      "change_24h": -1.79
+      "price": 73744,
+      "change_24h": -1.74
     },
     "global": {
       "btc_dominance": 56.6,
-      "stablecoin_dominance": 10.12
+      "stablecoin_dominance": 10.13
     },
     "grade": {
       "score": 50,
@@ -20,87 +20,87 @@
       "regime": "RISK-OFF"
     },
     "summary": "Fear at 26 creates buying backdrop.",
-    "analysis": "Mixed signals across the board. The market is in a wait-and-see mode for alt buyers. Fear at 26 is elevated but not capitulation-level. Good backdrop for dollar-cost averaging into positions. BTC dominance at 56.6% is elevated. Some alt rotation may be beginning but BTC is still absorbing most inflows. Stablecoin dominance at 10.12% shows moderate sidelined capital. Some fuel for a rally but not a powder keg. Average RSI is 58 \u2014 mid-range with no strong directional signal from the technicals. BOTTOM LINE: No rush. The setup isn't there yet. Keep scanning, let the signals come to you."
+    "analysis": "Mixed signals across the board. The market is in a wait-and-see mode for alt buyers. Fear at 26 is elevated but not capitulation-level. Good backdrop for dollar-cost averaging into positions. BTC dominance at 56.6% is elevated. Some alt rotation may be beginning but BTC is still absorbing most inflows. Stablecoin dominance at 10.13% shows moderate sidelined capital. Some fuel for a rally but not a powder keg. Average RSI is 57 \u2014 mid-range with no strong directional signal from the technicals. BOTTOM LINE: No rush. The setup isn't there yet. Keep scanning, let the signals come to you."
   },
   "tokens": [
     {
       "symbol": "XDC",
-      "price": 0.03405186,
-      "change_24h": 0.81,
+      "price": 0.03404354,
+      "change_24h": 0.78,
       "image": "https://coin-images.coingecko.com/coins/images/2912/large/xdc-icon.png?1696503661",
-      "rsi": null,
+      "rsi": 49.7,
       "obv_signal": "NEUTRAL",
       "composite": 50
     },
     {
       "symbol": "XRP",
       "price": 1.51,
-      "change_24h": -1.69,
+      "change_24h": -1.8,
       "image": "https://coin-images.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png?1696501442",
-      "rsi": 59.3,
+      "rsi": 59.2,
       "obv_signal": "NEUTRAL",
       "composite": 41
     },
     {
       "symbol": "IOTA",
-      "price": 0.066855,
-      "change_24h": -1.46,
+      "price": 0.066691,
+      "change_24h": -1.48,
       "image": "https://coin-images.coingecko.com/coins/images/692/large/IOTA_Thumbnail_%281%29.png?1743772896",
-      "rsi": 50.8,
+      "rsi": 50.3,
       "obv_signal": "NEUTRAL",
       "composite": 41
     },
     {
       "symbol": "XLM",
-      "price": 0.173063,
-      "change_24h": -2.4,
+      "price": 0.172805,
+      "change_24h": -2.33,
       "image": "https://coin-images.coingecko.com/coins/images/100/large/fmpFRHHQ_400x400.jpg?1735231350",
-      "rsi": 59.0,
+      "rsi": 58.9,
       "obv_signal": "NEUTRAL",
       "composite": 41
     },
     {
       "symbol": "HBAR",
-      "price": 0.098632,
-      "change_24h": -1.61,
+      "price": 0.098687,
+      "change_24h": -1.46,
       "image": "https://coin-images.coingecko.com/coins/images/3688/large/hbar.png?1696504364",
-      "rsi": 51.0,
+      "rsi": 51.2,
       "obv_signal": "NEUTRAL",
       "composite": 41
     },
     {
       "symbol": "ONDO",
-      "price": 0.279398,
-      "change_24h": -3.45,
+      "price": 0.278866,
+      "change_24h": -3.54,
       "image": "https://coin-images.coingecko.com/coins/images/26580/large/ONDO.png?1696525656",
-      "rsi": 56.0,
+      "rsi": 55.8,
       "obv_signal": "NEUTRAL",
       "composite": 41
     },
     {
       "symbol": "ETH",
-      "price": 2314.13,
-      "change_24h": -1.99,
+      "price": 2316.89,
+      "change_24h": -1.56,
       "image": "https://coin-images.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
-      "rsi": 67.2,
+      "rsi": 67.4,
       "obv_signal": "NEUTRAL",
       "composite": 32
     },
     {
       "symbol": "LINK",
-      "price": 9.77,
-      "change_24h": -1.71,
+      "price": 9.78,
+      "change_24h": -1.61,
       "image": "https://coin-images.coingecko.com/coins/images/877/large/Chainlink_Logo_500.png?1760023405",
-      "rsi": 61.4,
+      "rsi": 61.5,
       "obv_signal": "NEUTRAL",
       "composite": 32
     },
     {
       "symbol": "QNT",
-      "price": 70.52,
-      "change_24h": 2.05,
+      "price": 70.19,
+      "change_24h": 1.69,
       "image": "https://coin-images.coingecko.com/coins/images/3370/large/5ZOu7brX_400x400.jpg?1696504070",
-      "rsi": 61.4,
+      "rsi": 60.2,
       "obv_signal": "NEUTRAL",
       "composite": 32
     }
