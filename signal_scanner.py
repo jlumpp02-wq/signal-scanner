@@ -1,14 +1,14 @@
 """
-SignalScanner v6.1 — Asymmetric Alt Opportunity Bot
-GitHub Actions + Telegram notification + GitHub Pages dashboard
-Dynamic coin logos from CoinGecko API + expandable market analysis
+SignalScanner v7 — Asymmetric Alt Opportunity Bot
+Scoring: 70% ATH Discount + 20% RSI + 10% OBV × Market Multiplier
+GitHub Actions + Telegram + GitHub Pages dashboard
 """
-
+ 
 import json, os, time
 from datetime import datetime, timezone
 from urllib.request import urlopen, Request
 from urllib.error import HTTPError
-
+ 
 TOKENS = {
     "ethereum": {"symbol": "ETH", "name": "Ethereum"},
     "chainlink": {"symbol": "LINK", "name": "Chainlink"},
@@ -20,17 +20,17 @@ TOKENS = {
     "xdce-crowd-sale": {"symbol": "XDC", "name": "XDC Network"},
     "ondo-finance": {"symbol": "ONDO", "name": "Ondo Finance"},
 }
-
+ 
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
 DASHBOARD_URL = os.environ.get("DASHBOARD_URL", "")
 ALERT_THRESHOLD = 65
-
-
+ 
+ 
 def fetch_json(url, retries=3):
     for attempt in range(retries):
         try:
-            req = Request(url, headers={"User-Agent": "SignalScanner/6.1", "Accept": "application/json"})
+            req = Request(url, headers={"User-Agent": "SignalScanner/7.0", "Accept": "application/json"})
             with urlopen(req, timeout=15) as resp:
                 return json.loads(resp.read().decode())
         except HTTPError as e:
@@ -45,8 +45,14 @@ def fetch_json(url, retries=3):
             print(f"  Error: {e}")
             if attempt < retries - 1: time.sleep(5)
     return None
-
-
+ 
+ 
+def fmt_rsi(rsi):
+    if rsi is None: return "?"
+    return f"{rsi:.0f}"
+ 
+ 
+# ═══ DATA ═══
 def get_fear_greed():
     print("Fetching Fear & Greed...")
     data = fetch_json("https://api.alternative.me/fng/?limit=1")
@@ -54,7 +60,7 @@ def get_fear_greed():
         e = data["data"][0]
         return {"value": int(e["value"]), "label": e["value_classification"]}
     return {"value": 50, "label": "Unknown"}
-
+ 
 def get_global_data():
     print("Fetching global data...")
     data = fetch_json("https://api.coingecko.com/api/v3/global")
@@ -64,17 +70,17 @@ def get_global_data():
         stable_dom = round(sum(d.get("market_cap_percentage", {}).get(s, 0) for s in ["usdt", "usdc", "dai", "busd"]), 2)
         return {"btc_dominance": btc_dom, "stablecoin_dominance": stable_dom}
     return {"btc_dominance": 55, "stablecoin_dominance": 10}
-
+ 
 def get_btc_price():
     print("Fetching BTC price...")
     data = fetch_json("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true")
     if data and "bitcoin" in data:
         return {"price": round(data["bitcoin"]["usd"], 2), "change_24h": round(data["bitcoin"].get("usd_24h_change", 0), 2)}
     return {"price": 0, "change_24h": 0}
-
+ 
 def get_token_data():
     ids = ",".join(TOKENS.keys())
-    print(f"Fetching prices + images for {len(TOKENS)} tokens...")
+    print(f"Fetching prices + ATH for {len(TOKENS)} tokens...")
     data = fetch_json(f"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids={ids}&order=market_cap_desc&sparkline=false")
     result = {}
     if data:
@@ -83,12 +89,15 @@ def get_token_data():
             if cg_id in TOKENS:
                 sym = TOKENS[cg_id]["symbol"]
                 result[sym] = {
-                    "price": coin.get("current_price", 0),
+                    "price": coin.get("current_price", 0) or 0,
                     "change_24h": round(coin.get("price_change_percentage_24h", 0) or 0, 2),
                     "image": coin.get("image", ""),
+                    "ath": coin.get("ath", 0) or 0,
+                    "ath_change_pct": round(coin.get("ath_change_percentage", 0) or 0, 1),
+                    "ath_date": coin.get("ath_date", ""),
                 }
     return result
-
+ 
 def get_market_chart(cg_id, days=30):
     data = fetch_json(f"https://api.coingecko.com/api/v3/coins/{cg_id}/market_chart?vs_currency=usd&days={days}&interval=daily")
     if data and "prices" in data and "total_volumes" in data:
@@ -97,8 +106,9 @@ def get_market_chart(cg_id, days=30):
         n = min(len(p), len(v))
         return p[:n], v[:n]
     return [], []
-
-
+ 
+ 
+# ═══ TECHNICALS ═══
 def compute_rsi(prices, period=14):
     if len(prices) < period + 1: return None
     deltas = [prices[i] - prices[i-1] for i in range(1, len(prices))]
@@ -111,7 +121,7 @@ def compute_rsi(prices, period=14):
         al = (al * (period-1) + losses[i]) / period
     if al == 0: return 100.0
     return round(100 - (100 / (1 + ag/al)), 1)
-
+ 
 def compute_obv_signal(prices, volumes, lookback=7):
     if len(prices) < lookback + 1: return "NEUTRAL"
     obv = [0]
@@ -126,39 +136,40 @@ def compute_obv_signal(prices, volumes, lookback=7):
     if pct <= 0.02 and ot > 0: return "ACCUMULATING"
     elif pct >= -0.02 and ot < 0: return "DISTRIBUTING"
     return "NEUTRAL"
-
-
+ 
+ 
+# ═══ MARKET GRADE ═══
 def score_fg(v):
     thresholds = [(10,100),(20,90),(30,75),(40,60),(50,50),(60,40),(70,25),(80,15)]
     for t, s in thresholds:
         if v <= t: return s
     return 5
-
+ 
 def score_social(s):
     if s <= 30: return 85
     if s <= 50: return 65
     if s <= 70: return 30
     return 10
-
+ 
 def score_btcdom(d):
     if d <= 45: return 90
     if d <= 50: return 70
     if d <= 55: return 50
     if d <= 60: return 30
     return 10
-
+ 
 def score_stabledom(d):
     if d >= 14: return 90
     if d >= 12: return 75
     if d >= 10: return 55
     if d >= 8: return 35
     return 15
-
+ 
 def score_regime(fg, bd):
     if fg <= 35 and bd >= 55: return 80, "RISK-OFF"
     elif fg >= 55: return 25, "RISK-ON"
     return 50, "NEUTRAL"
-
+ 
 def market_grade(fg, social, btcdom, stabledom):
     a = score_fg(fg)
     b = score_social(social)
@@ -172,27 +183,47 @@ def market_grade(fg, social, btcdom, stabledom):
     elif score >= 35: g, m = "C", 0.85
     else: g, m = "D", 0.7
     return {"score": score, "grade": g, "multiplier": m, "regime": regime}
-
+ 
+ 
+# ═══ TOKEN SCORING (v7) ═══
+def score_ath_discount(pct_off):
+    discount = abs(pct_off)
+    if discount >= 90: return 100
+    if discount >= 80: return 92
+    if discount >= 70: return 82
+    if discount >= 60: return 72
+    if discount >= 50: return 60
+    if discount >= 40: return 48
+    if discount >= 30: return 35
+    if discount >= 20: return 22
+    if discount >= 10: return 12
+    return 5
+ 
 def score_rsi(r):
     if r is None: return 50
     thresholds = [(20,95),(30,80),(40,65),(50,50),(60,35),(70,20)]
     for t, s in thresholds:
         if r <= t: return s
     return 10
-
+ 
 def score_obv(s):
     return {"ACCUMULATING": 90, "DISTRIBUTING": 10}.get(s, 50)
-
-def token_score(rsi, obv, mult):
-    return min(100, round((score_rsi(rsi) * 0.6 + score_obv(obv) * 0.4) * mult))
-
+ 
+def token_score(ath_pct, rsi, obv, mult):
+    ath_s = score_ath_discount(ath_pct)
+    rsi_s = score_rsi(rsi)
+    obv_s = score_obv(obv)
+    raw = ath_s * 0.70 + rsi_s * 0.20 + obv_s * 0.10
+    composite = min(100, round(raw * mult))
+    return {"ath_score": ath_s, "rsi_score": rsi_s, "obv_score": obv_s, "raw": round(raw), "composite": composite}
+ 
 def signal_label(s):
     if s >= 80: return "STRONG BUY"
     if s >= 65: return "ACCUMULATE"
     if s >= 45: return "NEUTRAL"
     if s >= 30: return "CAUTION"
     return "AVOID"
-
+ 
 def recommend_freq(tokens):
     if not tokens: return "DAILY", "No data"
     mx = max(t["composite"] for t in tokens)
@@ -200,86 +231,79 @@ def recommend_freq(tokens):
     if mx >= 65: return "4-HOUR", "Signals converging"
     if mx >= 50: return "6-HOUR", "Moderate setups"
     return "DAILY", "No actionable signals"
-
-
-def fmt_rsi(rsi):
-    if rsi is None: return "?"
-    return f"{rsi:.0f}"
-
-
+ 
+ 
+# ═══ ANALYSIS ═══
 def generate_analysis(fg, gd, grade, tokens):
     actionable = [t for t in tokens if t["composite"] >= ALERT_THRESHOLD]
+    deep_discount = [t for t in tokens if abs(t.get("ath_change_pct", 0)) >= 80]
     oversold = [t for t in tokens if t.get("rsi") and t["rsi"] <= 35]
     accumulating = [t for t in tokens if t["obv_signal"] == "ACCUMULATING"]
     rsi_vals = [t["rsi"] for t in tokens if t["rsi"]]
     avg_rsi = sum(rsi_vals) / max(1, len(rsi_vals))
-
+    avg_discount = sum(abs(t.get("ath_change_pct", 0)) for t in tokens) / max(1, len(tokens))
+ 
     lines = []
-
+ 
     if grade["score"] >= 75:
         lines.append("Market conditions are strongly aligned for alt accumulation. Multiple signals point to asymmetric upside.")
     elif grade["score"] >= 60:
-        lines.append("Conditions are leaning favorable for selective alt buying. Not a full green light, but the backdrop is constructive.")
+        lines.append("Conditions lean favorable for selective buying. Not full green light, but constructive.")
     elif grade["score"] >= 45:
-        lines.append("Mixed signals across the board. The market is in a wait-and-see mode for alt buyers.")
+        lines.append("Mixed signals. Wait-and-see mode for alt buyers.")
     elif grade["score"] >= 30:
-        lines.append("Conditions are unfavorable for new alt positions. Headwinds outweigh tailwinds right now.")
+        lines.append("Unfavorable for new alt positions. Headwinds outweigh tailwinds.")
     else:
-        lines.append("Worst-case environment for alt buying. Capital is flowing away from alts and risk appetite is minimal.")
-
+        lines.append("Worst-case for alt buying. Capital flowing away from alts.")
+ 
+    lines.append(f"Your watchlist averages {avg_discount:.0f}% off all-time highs.")
+    if avg_discount >= 80:
+        lines.append("Deep cycle discount territory. Historically, buying utility tokens 80%+ off ATH with a multi-year hold produces outsized returns.")
+    elif avg_discount >= 60:
+        lines.append("Significant discount from peak. Well below euphoria levels \u2014 this is where you want to accumulate.")
+    elif avg_discount >= 40:
+        lines.append("Moderate discount. Selective entries could work.")
+    else:
+        lines.append("Relatively close to highs. Less asymmetric upside available.")
+ 
+    if deep_discount:
+        names = ", ".join(f"{t['symbol']} ({abs(t['ath_change_pct']):.0f}% off)" for t in deep_discount)
+        lines.append(f"Deepest discounts: {names}.")
+ 
     if fg["value"] <= 20:
-        lines.append(f"Extreme fear at {fg['value']} is historically where the sharpest reversals happen. This is prime contrarian territory.")
+        lines.append(f"Extreme fear at {fg['value']} \u2014 historically where sharpest reversals happen.")
     elif fg["value"] <= 35:
-        lines.append(f"Fear at {fg['value']} is elevated but not capitulation-level. Good backdrop for dollar-cost averaging into positions.")
+        lines.append(f"Fear at {fg['value']} is elevated. Good DCA backdrop.")
     elif fg["value"] >= 70:
-        lines.append(f"Greed at {fg['value']} means the crowd is euphoric. Historically a terrible time to open new positions.")
-    else:
-        lines.append(f"Sentiment at {fg['value']} is neutral \u2014 no strong contrarian signal either way.")
-
+        lines.append(f"Greed at {fg['value']} \u2014 terrible time for new positions.")
+ 
     bd = gd["btc_dominance"]
     if bd >= 60:
-        lines.append(f"BTC dominance at {bd}% is a major headwind. Money is hiding in Bitcoin, not rotating to alts. Wait for this to break below 55% before getting aggressive.")
+        lines.append(f"BTC dom {bd}% is a major alt headwind.")
     elif bd >= 55:
-        lines.append(f"BTC dominance at {bd}% is elevated. Some alt rotation may be beginning but BTC is still absorbing most inflows.")
+        lines.append(f"BTC dom {bd}% elevated. BTC still absorbing most inflows.")
     elif bd <= 48:
-        lines.append(f"BTC dominance at {bd}% signals active capital rotation into alts. This is the environment where utility tokens outperform.")
-    else:
-        lines.append(f"BTC dominance at {bd}% is in the transition zone. Watch for a sustained break below 50% as the signal to get aggressive.")
-
-    sd = gd["stablecoin_dominance"]
-    if sd >= 14:
-        lines.append(f"Stablecoin dominance at {sd}% means massive dry powder on the sidelines. When this capital deploys, it hits alts hard.")
-    elif sd >= 10:
-        lines.append(f"Stablecoin dominance at {sd}% shows moderate sidelined capital. Some fuel for a rally but not a powder keg.")
-    else:
-        lines.append(f"Stablecoin dominance at {sd}% is low. Most capital is already deployed \u2014 limited ammunition for further buying.")
-
-    if avg_rsi <= 35:
-        lines.append(f"Average RSI across your tokens is {avg_rsi:.0f} \u2014 deeply oversold. This is the technical setup you want to see for asymmetric entries.")
-    elif avg_rsi >= 65:
-        lines.append(f"Average RSI is {avg_rsi:.0f} \u2014 approaching overbought territory. Chasing here carries reversal risk.")
-    else:
-        lines.append(f"Average RSI is {avg_rsi:.0f} \u2014 mid-range with no strong directional signal from the technicals.")
-
+        lines.append(f"BTC dom {bd}% \u2014 active alt rotation. Utility tokens outperform here.")
+ 
     if accumulating:
         names = ", ".join(t["symbol"] for t in accumulating)
-        lines.append(f"OBV shows accumulation in {names} \u2014 smart money may be building positions while price is flat or down.")
-
+        lines.append(f"OBV accumulation in {names} \u2014 smart money building positions.")
+ 
     if oversold:
         names = ", ".join(t["symbol"] for t in oversold)
-        lines.append(f"Oversold tokens: {names}. These deserve the closest watch for reversal setups.")
-
+        lines.append(f"RSI oversold: {names}.")
+ 
     if actionable:
         names = ", ".join(t["symbol"] for t in actionable)
-        lines.append(f"BOTTOM LINE: {len(actionable)} actionable setup(s) \u2014 {names}. The combination of market conditions and technicals warrants attention.")
-    elif grade["score"] >= 50 and any(t["rsi"] and t["rsi"] <= 40 for t in tokens):
-        lines.append("BOTTOM LINE: No tokens hit the full actionable threshold yet, but the backdrop is constructive. Watch for RSI dips below 30 on any pullback \u2014 those would be the entry points.")
+        lines.append(f"BOTTOM LINE: {len(actionable)} actionable \u2014 {names}. Deep discount + favorable conditions = asymmetric setup.")
+    elif avg_discount >= 70 and grade["score"] >= 50:
+        lines.append("BOTTOM LINE: Deeply discounted but signals haven't converged. Watch for fear spikes or RSI drops as entry triggers.")
     else:
-        lines.append("BOTTOM LINE: No rush. The setup isn't there yet. Keep scanning, let the signals come to you.")
-
+        lines.append("BOTTOM LINE: No rush. Let the setup come to you.")
+ 
     return " ".join(lines)
-
-
+ 
+ 
 def gen_summary(fg, bd, sd):
     parts = []
     if fg["value"] <= 30: parts.append(f"Fear at {fg['value']} creates buying backdrop")
@@ -290,8 +314,9 @@ def gen_summary(fg, bd, sd):
     if sd >= 12: parts.append(f"{sd}% stables = dry powder")
     elif sd < 8: parts.append(f"{sd}% stables \u2014 capital deployed")
     return ". ".join(parts) + "."
-
-
+ 
+ 
+# ═══ TELEGRAM ═══
 def send_telegram(fg, btc, grade, tokens, freq, summary):
     if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
         print("No Telegram credentials, skipping")
@@ -317,33 +342,37 @@ def send_telegram(fg, btc, grade, tokens, freq, summary):
             print(f"Telegram sent (status {resp.status})")
     except Exception as e:
         print(f"Telegram error: {e}")
-
-
+ 
+ 
+# ═══ DASHBOARD ═══
 def generate_dashboard(fg, btc, gd, grade, tokens, freq, summary, analysis, scan_time):
     actionable = [t for t in tokens if t["composite"] >= ALERT_THRESHOLD]
-
+ 
     def sc(s):
         if s >= 80: return "#00ffc8"
         if s >= 65: return "#7ae8c4"
         if s >= 45: return "#d4a853"
         if s >= 30: return "#d47a53"
         return "#e84057"
-
     def cc(v): return "#00ffc8" if v >= 0 else "#e84057"
-
     def oc(s):
         if s == "ACCUMULATING": return "#00ffc8"
         if s == "DISTRIBUTING": return "#e84057"
         return "#555d75"
-
     def fp(p):
         if not p: return "?"
         if p >= 100: return f"${p:,.2f}"
         if p >= 1: return f"${p:.2f}"
         return f"${p:.4f}"
-
+    def dc(pct):
+        d = abs(pct)
+        if d >= 80: return "#00ffc8"
+        if d >= 60: return "#7ae8c4"
+        if d >= 40: return "#d4a853"
+        return "#d47a53"
+ 
     gc = sc(grade["score"])
-
+ 
     cards = ""
     for i, t in enumerate(tokens):
         tc = sc(t["composite"])
@@ -363,7 +392,12 @@ def generate_dashboard(fg, btc, gd, grade, tokens, freq, summary, analysis, scan
         name = TOKENS.get(cg_id, {}).get("name", t["symbol"])
         fb_letters = t["symbol"][:2]
         border_color = "rgba(0,255,200,0.15)" if t["composite"] >= 65 else "rgba(26,37,64,0.8)"
-
+        ath_pct = abs(t.get("ath_change_pct", 0))
+        ath_val = t.get("ath", 0)
+        ath_c = dc(t.get("ath_change_pct", 0))
+        ath_bar_w = min(100, ath_pct)
+        ath_price = fp(ath_val) if ath_val else "?"
+ 
         cards += f'''
         <div class="tc" style="animation-delay:{i*0.06}s;border-color:{border_color}">
           <div class="th">
@@ -377,22 +411,29 @@ def generate_dashboard(fg, btc, gd, grade, tokens, freq, summary, analysis, scan
             <span class="pv">{fp(t["price"])}</span>
             <span class="pc" style="color:{chc}">{arrow} {t["change_24h"]:+.1f}%</span>
           </div>
+          <div class="ath-row">
+            <div class="ath-label">ATH DISCOUNT</div>
+            <div class="ath-bar-bg"><div class="ath-bar" style="width:{ath_bar_w}%;background:{ath_c}"></div></div>
+            <div class="ath-val" style="color:{ath_c}">{ath_pct:.0f}% off</div>
+          </div>
+          <div class="ath-detail">ATH {ath_price}</div>
           <div class="tm">
             <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:{rp}%;background:{tc}"></div></div><div class="mval" style="color:{tc}">{rsi_display}</div></div>
             <div class="m"><div class="mla">OBV</div><div class="mval" style="color:{obc}">{ol}</div></div>
             <div class="m"><div class="mla">SCORE</div><div class="mval sb" style="color:{tc}">{t["composite"]}</div></div>
           </div>
         </div>'''
-
+ 
     tgt = ""
     if actionable:
         items = ""
         for t in actionable:
             tc = sc(t["composite"])
             rsi_display = fmt_rsi(t["rsi"])
-            items += f'<div class="ti"><span class="tis" style="color:{tc}">{t["symbol"]}</span><span class="tic" style="color:{tc}">Score {t["composite"]}</span><span class="tid">RSI {rsi_display} \u00b7 {t["obv_signal"]}</span></div>'
+            ath_pct = abs(t.get("ath_change_pct", 0))
+            items += f'<div class="ti"><span class="tis" style="color:{tc}">{t["symbol"]}</span><span class="tic" style="color:{tc}">Score {t["composite"]}</span><span class="tid">{ath_pct:.0f}% off ATH \u00b7 RSI {rsi_display}</span></div>'
         tgt = f'<div class="sl" style="color:#00ffc8">\u26a1 TARGETS DETECTED</div><div class="tg2">{items}</div>'
-
+ 
     fc = "#e84057" if fg["value"]<=25 else "#d47a53" if fg["value"]<=45 else "#d4a853" if fg["value"]<=55 else "#7ae8c4" if fg["value"]<=75 else "#00ffc8"
     bcc = cc(btc["change_24h"])
     ba = "\u25b2" if btc["change_24h"] >= 0 else "\u25bc"
@@ -401,9 +442,8 @@ def generate_dashboard(fg, btc, gd, grade, tokens, freq, summary, analysis, scan
     rc = "#e84057" if grade["regime"]=="RISK-OFF" else "#00ffc8" if grade["regime"]=="RISK-ON" else "#d4a853"
     bd_label = "ALT HEADWIND" if gd["btc_dominance"]>=58 else "LEANING BTC" if gd["btc_dominance"]>=55 else "MIXED" if gd["btc_dominance"]>=50 else "ALT TAILWIND"
     sd_label = "DRY POWDER" if gd["stablecoin_dominance"]>=12 else "MODERATE" if gd["stablecoin_dominance"]>=8 else "DEPLOYED"
-
     analysis_safe = analysis.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-
+ 
     html = f'''<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -452,9 +492,15 @@ body{{background:#060a14;color:#c8cfe0;font-family:'Outfit',sans-serif;min-heigh
 .ts{{font-size:18px;font-weight:800;font-family:'JetBrains Mono',monospace}}
 .tn{{font-size:11px;color:#555d75;font-weight:400}}
 .tb{{font-size:9px;font-weight:700;letter-spacing:1px;padding:4px 10px;border-radius:6px;border:1px solid;font-family:'JetBrains Mono',monospace}}
-.tp{{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}}
+.tp{{display:flex;align-items:baseline;gap:10px;margin-bottom:8px}}
 .pv{{font-size:15px;font-weight:600;color:#e8ecf4;font-family:'JetBrains Mono',monospace}}
 .pc{{font-size:12px;font-weight:600;font-family:'JetBrains Mono',monospace}}
+.ath-row{{display:flex;align-items:center;gap:8px;margin-bottom:4px}}
+.ath-label{{font-size:8px;letter-spacing:1.5px;color:#3d465e;font-family:'JetBrains Mono',monospace;min-width:80px}}
+.ath-bar-bg{{height:6px;background:#151d30;border-radius:3px;flex:1;overflow:hidden}}
+.ath-bar{{height:100%;border-radius:3px}}
+.ath-val{{font-size:13px;font-weight:700;font-family:'JetBrains Mono',monospace;min-width:65px;text-align:right}}
+.ath-detail{{font-size:10px;color:#2a3045;font-family:'JetBrains Mono',monospace;margin-bottom:12px}}
 .tm{{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center}}
 .m{{text-align:center}}
 .m:first-child{{text-align:left;display:flex;align-items:center;gap:8px}}
@@ -479,12 +525,12 @@ body{{background:#060a14;color:#c8cfe0;font-family:'Outfit',sans-serif;min-heigh
     <div class="sum">{summary}</div>
     <div class="st">{scan_time}</div>
   </div>
-
+ 
   <div class="aw">
     <button class="ab-btn" id="abtn" onclick="var b=document.getElementById('abody');b.classList.toggle('open');document.getElementById('abtn').textContent=b.classList.contains('open')?'\\u25b4 HIDE ANALYSIS':'\\u25be MARKET ANALYSIS'">&#9662; MARKET ANALYSIS</button>
     <div class="ab-body" id="abody">{analysis_safe}</div>
   </div>
-
+ 
   <div class="sl">MARKET CONDITIONS</div>
   <div class="mg">
     <div class="mc">
@@ -512,46 +558,66 @@ body{{background:#060a14;color:#c8cfe0;font-family:'Outfit',sans-serif;min-heigh
       <div class="mv" style="color:{rc}">{grade["regime"]}</div>
     </div>
   </div>
-
+ 
   {tgt}
-
+ 
   <div class="sl">UTILITY TOKEN SIGNALS &middot; {len(actionable)} ACTIONABLE</div>
   <div class="tg">{cards}</div>
-
+ 
   <div class="fb">
     <div class="fl">&#9201; NEXT SCAN</div>
     <div class="fv">{freq[0]} &middot; {freq[1]}</div>
   </div>
-  <div class="ft">SIGNALSCANNER v6.1 &middot; NOT FINANCIAL ADVICE</div>
+  <div class="ft">SIGNALSCANNER v7.0 &middot; NOT FINANCIAL ADVICE</div>
 </div>
 </body>
 </html>'''
     return html
-
-
+ 
+ 
+# ═══ ADAPTIVE FREQUENCY ═══
+def should_run():
+    try:
+        with open("docs/data.json", "r") as f:
+            last = json.load(f)
+        last_time = datetime.fromisoformat(last["timestamp"])
+        freq = last.get("frequency", "DAILY")
+        now = datetime.now(timezone.utc)
+        hours_since = (now - last_time).total_seconds() / 3600
+        if freq == "HOURLY": return True
+        if freq == "4-HOUR" and hours_since >= 4: return True
+        if freq == "6-HOUR" and hours_since >= 6: return True
+        if freq == "DAILY" and hours_since >= 24: return True
+        print(f"Skipping \u2014 last scan {hours_since:.1f}h ago, frequency is {freq}")
+        return False
+    except Exception:
+        return True
+ 
+ 
+# ═══ MAIN ═══
 def run_scan():
     scan_time = datetime.now(timezone.utc).strftime("%b %d, %Y \u00b7 %H:%M UTC")
-    print(f"SIGNALSCANNER v6.1 - {scan_time}\n")
-
+    print(f"SIGNALSCANNER v7.0 - {scan_time}\n")
+ 
     fg = get_fear_greed()
     print(f"  Fear & Greed: {fg['value']} ({fg['label']})")
-
+ 
     gd = get_global_data()
     print(f"  BTC Dom: {gd['btc_dominance']}% | Stable Dom: {gd['stablecoin_dominance']}%")
-
+ 
     btc = get_btc_price()
     print(f"  BTC: ${btc['price']:,.2f} ({btc['change_24h']:+.1f}%)")
-
+ 
     time.sleep(1.5)
     token_data = get_token_data()
-    print(f"  Got {len(token_data)} token prices + images")
-
+    print(f"  Got {len(token_data)} token prices + ATH data")
+ 
     social = max(20, min(90, 100 - fg["value"]))
     grade = market_grade(fg["value"], social, gd["btc_dominance"], gd["stablecoin_dominance"])
     print(f"  Grade: {grade['grade']} ({grade['score']}/100) -> {grade['multiplier']}x | {grade['regime']}")
-
+ 
     summary = gen_summary(fg, gd["btc_dominance"], gd["stablecoin_dominance"])
-
+ 
     print(f"\nComputing technicals...")
     tokens = []
     for cg_id, info in TOKENS.items():
@@ -561,38 +627,56 @@ def run_scan():
         hp, hv = get_market_chart(cg_id, 30)
         rsi = compute_rsi(hp)
         obv = compute_obv_signal(hp, hv)
-        comp = token_score(rsi, obv, grade["multiplier"])
-        td = token_data.get(sym, {"price": 0, "change_24h": 0, "image": ""})
-        tokens.append({"symbol": sym, "price": td["price"], "change_24h": td["change_24h"], "image": td.get("image", ""), "rsi": rsi, "obv_signal": obv, "composite": comp})
-        print(f"RSI={fmt_rsi(rsi)} OBV={obv} Score={comp}")
-
+        td = token_data.get(sym, {"price": 0, "change_24h": 0, "image": "", "ath": 0, "ath_change_pct": 0})
+        scores = token_score(td.get("ath_change_pct", 0), rsi, obv, grade["multiplier"])
+        tokens.append({
+            "symbol": sym,
+            "price": td["price"],
+            "change_24h": td["change_24h"],
+            "image": td.get("image", ""),
+            "ath": td.get("ath", 0),
+            "ath_change_pct": td.get("ath_change_pct", 0),
+            "rsi": rsi,
+            "obv_signal": obv,
+            "ath_score": scores["ath_score"],
+            "rsi_score": scores["rsi_score"],
+            "obv_score": scores["obv_score"],
+            "raw_score": scores["raw"],
+            "composite": scores["composite"],
+        })
+        ath_off = abs(td.get("ath_change_pct", 0))
+        print(f"ATH -{ath_off:.0f}% RSI={fmt_rsi(rsi)} OBV={obv} Score={scores['composite']}")
+ 
     tokens.sort(key=lambda x: x["composite"], reverse=True)
     freq = recommend_freq(tokens)
     print(f"\n  Scan frequency: {freq[0]} - {freq[1]}")
-
+ 
     analysis = generate_analysis(fg, gd, grade, tokens)
     print(f"  Analysis: {analysis[:100]}...")
-
+ 
     os.makedirs("docs", exist_ok=True)
     html = generate_dashboard(fg, btc, gd, grade, tokens, freq, summary, analysis, scan_time)
     with open("docs/index.html", "w") as f:
         f.write(html)
     print("  Dashboard written to docs/index.html")
-
+ 
     send_telegram(fg, btc, grade, tokens, freq, summary)
-
+ 
     result = {"timestamp": datetime.now(timezone.utc).isoformat(), "market": {"fear_greed": fg, "btc": btc, "global": gd, "grade": grade, "summary": summary, "analysis": analysis}, "tokens": tokens, "frequency": freq[0]}
     with open("docs/data.json", "w") as f:
         json.dump(result, f, indent=2)
-
+ 
     actionable = [t for t in tokens if t["composite"] >= ALERT_THRESHOLD]
     print(f"\n{'='*50}")
     if actionable:
         print(f"{len(actionable)} ACTIONABLE:")
-        for t in actionable: print(f"  {t['symbol']} - Score {t['composite']}")
+        for t in actionable:
+            ath_off = abs(t.get("ath_change_pct", 0))
+            print(f"  {t['symbol']} - Score {t['composite']} ({ath_off:.0f}% off ATH)")
     else:
         print("No actionable setups")
     print("="*50)
-
+ 
 if __name__ == "__main__":
-    run_scan()
+    if should_run():
+        run_scan()
