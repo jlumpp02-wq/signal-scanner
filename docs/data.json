@@ -1,17 +1,17 @@
 {
-  "timestamp": "2026-03-18T13:45:56.723865+00:00",
+  "timestamp": "2026-03-18T15:16:41.975085+00:00",
   "market": {
     "fear_greed": {
       "value": 26,
       "label": "Fear"
     },
     "btc": {
-      "price": 72496,
-      "change_24h": -1.85
+      "price": 71244,
+      "change_24h": -3.94
     },
     "global": {
-      "btc_dominance": 56.7,
-      "stablecoin_dominance": 10.31
+      "btc_dominance": 56.6,
+      "stablecoin_dominance": 10.45
     },
     "grade": {
       "score": 50,
@@ -20,89 +20,89 @@
       "regime": "RISK-OFF"
     },
     "summary": "Fear at 26 creates buying backdrop.",
-    "analysis": "Mixed signals across the board. The market is in a wait-and-see mode for alt buyers. Fear at 26 is elevated but not capitulation-level. Good backdrop for dollar-cost averaging into positions. BTC dominance at 56.7% is elevated. Some alt rotation may be beginning but BTC is still absorbing most inflows. Stablecoin dominance at 10.31% shows moderate sidelined capital. Some fuel for a rally but not a powder keg. Average RSI is 52 \u2014 mid-range with no strong directional signal from the technicals. OBV shows accumulation in IOTA, HBAR \u2014 smart money may be building positions while price is flat or down. BOTTOM LINE: 2 actionable setup(s) \u2014 IOTA, HBAR. The combination of market conditions and technicals warrants attention."
+    "analysis": "Mixed signals across the board. The market is in a wait-and-see mode for alt buyers. Fear at 26 is elevated but not capitulation-level. Good backdrop for dollar-cost averaging into positions. BTC dominance at 56.6% is elevated. Some alt rotation may be beginning but BTC is still absorbing most inflows. Stablecoin dominance at 10.45% shows moderate sidelined capital. Some fuel for a rally but not a powder keg. Average RSI is 50 \u2014 mid-range with no strong directional signal from the technicals. OBV shows accumulation in IOTA, HBAR, XDC, ONDO, LINK \u2014 smart money may be building positions while price is flat or down. BOTTOM LINE: 4 actionable setup(s) \u2014 IOTA, HBAR, XDC, ONDO. The combination of market conditions and technicals warrants attention."
   },
   "tokens": [
     {
       "symbol": "IOTA",
-      "price": 0.064286,
-      "change_24h": -3.24,
+      "price": 0.062635,
+      "change_24h": -6.19,
       "image": "https://coin-images.coingecko.com/coins/images/692/large/IOTA_Thumbnail_%281%29.png?1743772896",
-      "rsi": 43.7,
+      "rsi": 40.1,
       "obv_signal": "ACCUMULATING",
       "composite": 66
     },
     {
       "symbol": "HBAR",
-      "price": 0.096781,
-      "change_24h": -1.95,
+      "price": 0.095299,
+      "change_24h": -3.95,
       "image": "https://coin-images.coingecko.com/coins/images/3688/large/hbar.png?1696504364",
-      "rsi": 47.1,
+      "rsi": 44.4,
       "obv_signal": "ACCUMULATING",
       "composite": 66
     },
     {
       "symbol": "XDC",
-      "price": 0.03331201,
-      "change_24h": -2.24,
+      "price": 0.03262574,
+      "change_24h": -4.51,
       "image": "https://coin-images.coingecko.com/coins/images/2912/large/xdc-icon.png?1696503661",
-      "rsi": 46.4,
-      "obv_signal": "NEUTRAL",
-      "composite": 50
+      "rsi": 44.2,
+      "obv_signal": "ACCUMULATING",
+      "composite": 66
+    },
+    {
+      "symbol": "ONDO",
+      "price": 0.264396,
+      "change_24h": -5.99,
+      "image": "https://coin-images.coingecko.com/coins/images/26580/large/ONDO.png?1696525656",
+      "rsi": 48.1,
+      "obv_signal": "ACCUMULATING",
+      "composite": 66
     },
     {
       "symbol": "LINK",
-      "price": 9.4,
-      "change_24h": -4.04,
+      "price": 9.21,
+      "change_24h": -6.9,
       "image": "https://coin-images.coingecko.com/coins/images/877/large/Chainlink_Logo_500.png?1760023405",
-      "rsi": 54.4,
+      "rsi": 51.4,
+      "obv_signal": "ACCUMULATING",
+      "composite": 57
+    },
+    {
+      "symbol": "ETH",
+      "price": 2187.71,
+      "change_24h": -6.13,
+      "image": "https://coin-images.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+      "rsi": 56.8,
       "obv_signal": "NEUTRAL",
       "composite": 41
     },
     {
       "symbol": "XRP",
-      "price": 1.47,
-      "change_24h": -2.49,
+      "price": 1.45,
+      "change_24h": -4.39,
       "image": "https://coin-images.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png?1696501442",
-      "rsi": 53.6,
-      "obv_signal": "NEUTRAL",
-      "composite": 41
-    },
-    {
-      "symbol": "XLM",
-      "price": 0.169139,
-      "change_24h": -2.42,
-      "image": "https://coin-images.coingecko.com/coins/images/100/large/fmpFRHHQ_400x400.jpg?1735231350",
-      "rsi": 54.7,
-      "obv_signal": "NEUTRAL",
-      "composite": 41
-    },
-    {
-      "symbol": "QNT",
-      "price": 69.88,
-      "change_24h": 1.01,
-      "image": "https://coin-images.coingecko.com/coins/images/3370/large/5ZOu7brX_400x400.jpg?1696504070",
-      "rsi": 59.2,
-      "obv_signal": "NEUTRAL",
-      "composite": 41
-    },
-    {
-      "symbol": "ONDO",
-      "price": 0.269558,
-      "change_24h": -3.83,
-      "image": "https://coin-images.coingecko.com/coins/images/26580/large/ONDO.png?1696525656",
       "rsi": 50.7,
       "obv_signal": "NEUTRAL",
       "composite": 41
     },
     {
-      "symbol": "ETH",
-      "price": 2242.27,
-      "change_24h": -4.02,
-      "image": "https://coin-images.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
-      "rsi": 60.8,
+      "symbol": "XLM",
+      "price": 0.166292,
+      "change_24h": -4.09,
+      "image": "https://coin-images.coingecko.com/coins/images/100/large/fmpFRHHQ_400x400.jpg?1735231350",
+      "rsi": 51.7,
       "obv_signal": "NEUTRAL",
-      "composite": 32
+      "composite": 41
+    },
+    {
+      "symbol": "QNT",
+      "price": 69.63,
+      "change_24h": 0.99,
+      "image": "https://coin-images.coingecko.com/coins/images/3370/large/5ZOu7brX_400x400.jpg?1696504070",
+      "rsi": 58.3,
+      "obv_signal": "NEUTRAL",
+      "composite": 41
     }
   ],
   "frequency": "4-HOUR"
