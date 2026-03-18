@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SignalScanner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#060a14;color:#c8cfe0;font-family:'Outfit',sans-serif;min-height:100vh;padding:20px 16px}
+.ctr{max-width:520px;margin:0 auto}
+.hdr{text-align:center;margin-bottom:28px}
+.logo{font-size:11px;letter-spacing:6px;color:#3d465e;font-family:'JetBrains Mono',monospace;margin-bottom:6px}
+.ring{width:100px;height:100px;border-radius:50%;border:3px solid #d4a853;display:flex;align-items:center;justify-content:center;margin:16px auto;background:#d4a8530a;box-shadow:0 0 30px #d4a85315,inset 0 0 20px #d4a85308}
+.gl{font-size:36px;font-weight:900;color:#d4a853;font-family:'JetBrains Mono',monospace}
+.gm{font-size:13px;color:#8892a8;margin-top:8px;font-family:'JetBrains Mono',monospace}
+.gm b{color:#d4a853}
+.sum{font-size:13px;color:#5a6480;line-height:1.6;margin-top:12px;font-style:italic;max-width:400px;margin-left:auto;margin-right:auto}
+.st{font-size:10px;color:#2a3045;margin-top:10px;font-family:'JetBrains Mono',monospace;letter-spacing:1px}
+.aw{margin:20px 0;text-align:center}
+.ab-btn{background:rgba(255,255,255,0.04);border:1px solid #1a2540;color:#5a6480;padding:10px 20px;border-radius:10px;font-size:12px;font-family:'JetBrains Mono',monospace;cursor:pointer;letter-spacing:1px;transition:all 0.2s}
+.ab-btn:hover{border-color:#3d465e;color:#8892a8}
+.ab-body{display:none;text-align:left;background:linear-gradient(145deg,#0c1222,#101828);border:1px solid #1a2540;border-radius:14px;padding:20px;margin-top:12px;font-size:13px;color:#7a84a0;line-height:1.8}
+.ab-body.open{display:block}
+.sl{font-size:10px;letter-spacing:3px;color:#3d465e;font-family:'JetBrains Mono',monospace;font-weight:600;margin:24px 0 12px;padding-bottom:8px;border-bottom:1px solid #111827}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mc{background:linear-gradient(145deg,#0c1222,#101828);border:1px solid #1a2540;border-radius:14px;padding:16px;text-align:center}
+.mc.w{grid-column:1/-1}
+.ml{font-size:9px;letter-spacing:2px;color:#3d465e;font-family:'JetBrains Mono',monospace;margin-bottom:8px}
+.mv{font-size:24px;font-weight:800;font-family:'JetBrains Mono',monospace}
+.ms{font-size:10px;color:#3d465e;margin-top:4px;font-family:'JetBrains Mono',monospace;letter-spacing:1px}
+.tg2{display:flex;flex-direction:column;gap:8px;margin-bottom:8px}
+.ti{background:#00ffc808;border:1px solid #00ffc820;border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:12px}
+.tis{font-weight:800;font-size:16px;font-family:'JetBrains Mono',monospace}
+.tic{font-weight:700;font-size:13px;font-family:'JetBrains Mono',monospace}
+.tid{font-size:11px;color:#5a6480;margin-left:auto}
+.tg{display:flex;flex-direction:column;gap:8px}
+.tc{background:linear-gradient(145deg,#0c1222,#101828);border:1px solid #1a2540;border-radius:14px;padding:16px;animation:si 0.3s ease both}
+@keyframes si{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.th{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.thl{display:flex;align-items:center;gap:10px}
+.coin-wrap{width:32px;height:32px;border-radius:50%;position:relative;flex-shrink:0}
+.ci-img{width:32px;height:32px;border-radius:50%;position:absolute;top:0;left:0;object-fit:contain;z-index:2}
+.coin-fb{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;font-family:'JetBrains Mono',monospace;position:absolute;top:0;left:0;z-index:1}
+.ts{font-size:18px;font-weight:800;font-family:'JetBrains Mono',monospace}
+.tn{font-size:11px;color:#555d75;font-weight:400}
+.tb{font-size:9px;font-weight:700;letter-spacing:1px;padding:4px 10px;border-radius:6px;border:1px solid;font-family:'JetBrains Mono',monospace}
+.tp{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+.pv{font-size:15px;font-weight:600;color:#e8ecf4;font-family:'JetBrains Mono',monospace}
+.pc{font-size:12px;font-weight:600;font-family:'JetBrains Mono',monospace}
+.tm{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center}
+.m{text-align:center}
+.m:first-child{text-align:left;display:flex;align-items:center;gap:8px}
+.mla{font-size:8px;letter-spacing:1.5px;color:#3d465e;font-family:'JetBrains Mono',monospace;margin-bottom:2px}
+.m:first-child .mla{margin-bottom:0;min-width:22px}
+.mbg{height:4px;background:#151d30;border-radius:2px;flex:1;min-width:60px;overflow:hidden}
+.mb{height:100%;border-radius:2px}
+.mval{font-size:14px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.sb{font-size:18px;font-weight:800}
+.fb{background:linear-gradient(145deg,#0c1222,#101828);border:1px solid #1a2540;border-radius:14px;padding:14px 20px;margin-top:20px;display:flex;justify-content:space-between;align-items:center}
+.fl{font-size:10px;color:#3d465e;letter-spacing:2px;font-family:'JetBrains Mono',monospace}
+.fv{font-size:14px;font-weight:700;color:#5a6480;font-family:'JetBrains Mono',monospace}
+.ft{text-align:center;margin-top:28px;font-size:9px;color:#1a2540;letter-spacing:1.5px;font-family:'JetBrains Mono',monospace}
+</style>
+</head>
+<body>
+<div class="ctr">
+  <div class="hdr">
+    <div class="logo">SIGNAL SCANNER</div>
+    <div class="ring"><div class="gl">B</div></div>
+    <div class="gm"><b>50</b>/100 &middot; <b>1.0x</b> multiplier &middot; RISK-OFF</div>
+    <div class="sum">Fear at 26 creates buying backdrop.</div>
+    <div class="st">Mar 18, 2026 · 00:32 UTC</div>
+  </div>
+
+  <div class="aw">
+    <button class="ab-btn" id="abtn" onclick="var b=document.getElementById('abody');b.classList.toggle('open');document.getElementById('abtn').textContent=b.classList.contains('open')?'\u25b4 HIDE ANALYSIS':'\u25be MARKET ANALYSIS'">&#9662; MARKET ANALYSIS</button>
+    <div class="ab-body" id="abody">Mixed signals across the board. The market is in a wait-and-see mode for alt buyers. Fear at 26 is elevated but not capitulation-level. Good backdrop for dollar-cost averaging into positions. BTC dominance at 56.6% is elevated. Some alt rotation may be beginning but BTC is still absorbing most inflows. Stablecoin dominance at 10.12% shows moderate sidelined capital. Some fuel for a rally but not a powder keg. Average RSI is 58 — mid-range with no strong directional signal from the technicals. BOTTOM LINE: No rush. The setup isn't there yet. Keep scanning, let the signals come to you.</div>
+  </div>
+
+  <div class="sl">MARKET CONDITIONS</div>
+  <div class="mg">
+    <div class="mc">
+      <div class="ml">&#129504; FEAR &amp; GREED</div>
+      <div class="mv" style="color:#d47a53">26</div>
+      <div class="ms">FEAR</div>
+    </div>
+    <div class="mc">
+      <div class="ml">&#8383; BITCOIN</div>
+      <div class="mv" style="color:#d4a853">$73,779</div>
+      <div class="ms" style="color:#e84057">▼ -1.8%</div>
+    </div>
+    <div class="mc">
+      <div class="ml">&#128202; BTC DOMINANCE</div>
+      <div class="mv" style="color:#d47a53">56.6%</div>
+      <div class="ms">LEANING BTC</div>
+    </div>
+    <div class="mc">
+      <div class="ml">&#129689; STABLECOIN DOM</div>
+      <div class="mv" style="color:#d4a853">10.12%</div>
+      <div class="ms">MODERATE</div>
+    </div>
+    <div class="mc w">
+      <div class="ml">&#9889; REGIME</div>
+      <div class="mv" style="color:#e84057">RISK-OFF</div>
+    </div>
+  </div>
+
+  
+
+  <div class="sl">UTILITY TOKEN SIGNALS &middot; 0 ACTIONABLE</div>
+  <div class="tg">
+        <div class="tc" style="animation-delay:0.0s;border-color:rgba(26,37,64,0.8)">
+          <div class="th">
+            <div class="thl">
+              <div class="coin-wrap"><div class="coin-fb" style="background:#131f2e;color:#d4a853">XD</div><img class="ci-img" src="https://coin-images.coingecko.com/coins/images/2912/large/xdc-icon.png?1696503661" onerror="this.style.display='none'"></div>
+              <div><span class="ts" style="color:#d4a853">XDC</span> <span class="tn">XDC Network</span></div>
+            </div>
+            <div class="tb" style="color:#d4a853;background:#d4a85318;border-color:#d4a85333">NEUTRAL</div>
+          </div>
+          <div class="tp">
+            <span class="pv">$0.0341</span>
+            <span class="pc" style="color:#00ffc8">▲ +0.8%</span>
+          </div>
+          <div class="tm">
+            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:50%;background:#d4a853"></div></div><div class="mval" style="color:#d4a853">?</div></div>
+            <div class="m"><div class="mla">OBV</div><div class="mval" style="color:#555d75">FLAT</div></div>
+            <div class="m"><div class="mla">SCORE</div><div class="mval sb" style="color:#d4a853">50</div></div>
+          </div>
+        </div>
+        <div class="tc" style="animation-delay:0.06s;border-color:rgba(26,37,64,0.8)">
+          <div class="th">
+            <div class="thl">
+              <div class="coin-wrap"><div class="coin-fb" style="background:#131f2e;color:#d47a53">XR</div><img class="ci-img" src="https://coin-images.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png?1696501442" onerror="this.style.display='none'"></div>
+              <div><span class="ts" style="color:#d47a53">XRP</span> <span class="tn">XRP</span></div>
+            </div>
+            <div class="tb" style="color:#d47a53;background:#d47a5318;border-color:#d47a5333">CAUTION</div>
+          </div>
+          <div class="tp">
+            <span class="pv">$1.51</span>
+            <span class="pc" style="color:#e84057">▼ -1.7%</span>
+          </div>
+          <div class="tm">
+            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:59.3%;background:#d47a53"></div></div><div class="mval" style="color:#d47a53">59</div></div>
+            <div class="m"><div class="mla">OBV</div><div class="mval" style="color:#555d75">FLAT</div></div>
+            <div class="m"><div class="mla">SCORE</div><div class="mval sb" style="color:#d47a53">41</div></div>
+          </div>
+        </div>
+        <div class="tc" style="animation-delay:0.12s;border-color:rgba(26,37,64,0.8)">
+          <div class="th">
+            <div class="thl">
+              <div class="coin-wrap"><div class="coin-fb" style="background:#131f2e;color:#d47a53">IO</div><img class="ci-img" src="https://coin-images.coingecko.com/coins/images/692/large/IOTA_Thumbnail_%281%29.png?1743772896" onerror="this.style.display='none'"></div>
+              <div><span class="ts" style="color:#d47a53">IOTA</span> <span class="tn">IOTA</span></div>
+            </div>
+            <div class="tb" style="color:#d47a53;background:#d47a5318;border-color:#d47a5333">CAUTION</div>
+          </div>
+          <div class="tp">
+            <span class="pv">$0.0669</span>
+            <span class="pc" style="color:#e84057">▼ -1.5%</span>
+          </div>
+          <div class="tm">
+            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:50.8%;background:#d47a53"></div></div><div class="mval" style="color:#d47a53">51</div></div>
+            <div class="m"><div class="mla">OBV</div><div class="mval" style="color:#555d75">FLAT</div></div>
+            <div class="m"><div class="mla">SCORE</div><div class="mval sb" style="color:#d47a53">41</div></div>
+          </div>
+        </div>
+        <div class="tc" style="animation-delay:0.18s;border-color:rgba(26,37,64,0.8)">
+          <div class="th">
+            <div class="thl">
+              <div class="coin-wrap"><div class="coin-fb" style="background:#131f2e;color:#d47a53">XL</div><img class="ci-img" src="https://coin-images.coingecko.com/coins/images/100/large/fmpFRHHQ_400x400.jpg?1735231350" onerror="this.style.display='none'"></div>
+              <div><span class="ts" style="color:#d47a53">XLM</span> <span class="tn">Stellar</span></div>
+            </div>
+            <div class="tb" style="color:#d47a53;background:#d47a5318;border-color:#d47a5333">CAUTION</div>
+          </div>
+          <div class="tp">
+            <span class="pv">$0.1731</span>
+            <span class="pc" style="color:#e84057">▼ -2.4%</span>
+          </div>
+          <div class="tm">
+            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:59.0%;background:#d47a53"></div></div><div class="mval" style="color:#d47a53">59</div></div>
+            <div class="m"><div class="mla">OBV</div><div class="mval" style="color:#555d75">FLAT</div></div>
+            <div class="m"><div class="mla">SCORE</div><div class="mval sb" style="color:#d47a53">41</div></div>
+          </div>
+        </div>
+        <div class="tc" style="animation-delay:0.24s;border-color:rgba(26,37,64,0.8)">
+          <div class="th">
+            <div class="thl">
+              <div class="coin-wrap"><div class="coin-fb" style="background:#131f2e;color:#d47a53">HB</div><img class="ci-img" src="https://coin-images.coingecko.com/coins/images/3688/large/hbar.png?1696504364" onerror="this.style.display='none'"></div>
+              <div><span class="ts" style="color:#d47a53">HBAR</span> <span class="tn">Hedera</span></div>
+            </div>
+            <div class="tb" style="color:#d47a53;background:#d47a5318;border-color:#d47a5333">CAUTION</div>
+          </div>
+          <div class="tp">
+            <span class="pv">$0.0986</span>
+            <span class="pc" style="color:#e84057">▼ -1.6%</span>
+          </div>
+          <div class="tm">
+            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:51.0%;background:#d47a53"></div></div><div class="mval" style="color:#d47a53">51</div></div>
+            <div class="m"><div class="mla">OBV</div><div class="mval" style="color:#555d75">FLAT</div></div>
+            <div class="m"><div class="mla">SCORE</div><div class="mval sb" style="color:#d47a53">41</div></div>
+          </div>
+        </div>
+        <div class="tc" style="animation-delay:0.3s;border-color:rgba(26,37,64,0.8)">
+          <div class="th">
+            <div class="thl">
+              <div class="coin-wrap"><div class="coin-fb" style="background:#131f2e;color:#d47a53">ON</div><img class="ci-img" src="https://coin-images.coingecko.com/coins/images/26580/large/ONDO.png?1696525656" onerror="this.style.display='none'"></div>
+              <div><span class="ts" style="color:#d47a53">ONDO</span> <span class="tn">Ondo Finance</span></div>
+            </div>
+            <div class="tb" style="color:#d47a53;background:#d47a5318;border-color:#d47a5333">CAUTION</div>
+          </div>
+          <div class="tp">
+            <span class="pv">$0.2794</span>
+            <span class="pc" style="color:#e84057">▼ -3.5%</span>
+          </div>
+          <div class="tm">
+            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:56.00000000000001%;background:#d47a53"></div></div><div class="mval" style="color:#d47a53">56</div></div>
+            <div class="m"><div class="mla">OBV</div><div class="mval" style="color:#555d75">FLAT</div></div>
+            <div class="m"><div class="mla">SCORE</div><div class="mval sb" style="color:#d47a53">41</div></div>
+          </div>
+        </div>
+        <div class="tc" style="animation-delay:0.36s;border-color:rgba(26,37,64,0.8)">
+          <div class="th">
+            <div class="thl">
+              <div class="coin-wrap"><div class="coin-fb" style="background:#131f2e;color:#d47a53">ET</div><img class="ci-img" src="https://coin-images.coingecko.com/coins/images/279/large/ethereum.png?1696501628" onerror="this.style.display='none'"></div>
+              <div><span class="ts" style="color:#d47a53">ETH</span> <span class="tn">Ethereum</span></div>
+            </div>
+            <div class="tb" style="color:#d47a53;background:#d47a5318;border-color:#d47a5333">CAUTION</div>
+          </div>
+          <div class="tp">
+            <span class="pv">$2,314.13</span>
+            <span class="pc" style="color:#e84057">▼ -2.0%</span>
+          </div>
+          <div class="tm">
+            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:67.2%;background:#d47a53"></div></div><div class="mval" style="color:#d47a53">67</div></div>
+            <div class="m"><div class="mla">OBV</div><div class="mval" style="color:#555d75">FLAT</div></div>
+            <div class="m"><div class="mla">SCORE</div><div class="mval sb" style="color:#d47a53">32</div></div>
+          </div>
+        </div>
+        <div class="tc" style="animation-delay:0.42s;border-color:rgba(26,37,64,0.8)">
+          <div class="th">
+            <div class="thl">
+              <div class="coin-wrap"><div class="coin-fb" style="background:#131f2e;color:#d47a53">LI</div><img class="ci-img" src="https://coin-images.coingecko.com/coins/images/877/large/Chainlink_Logo_500.png?1760023405" onerror="this.style.display='none'"></div>
+              <div><span class="ts" style="color:#d47a53">LINK</span> <span class="tn">Chainlink</span></div>
+            </div>
+            <div class="tb" style="color:#d47a53;background:#d47a5318;border-color:#d47a5333">CAUTION</div>
+          </div>
+          <div class="tp">
+            <span class="pv">$9.77</span>
+            <span class="pc" style="color:#e84057">▼ -1.7%</span>
+          </div>
+          <div class="tm">
+            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:61.4%;background:#d47a53"></div></div><div class="mval" style="color:#d47a53">61</div></div>
+            <div class="m"><div class="mla">OBV</div><div class="mval" style="color:#555d75">FLAT</div></div>
+            <div class="m"><div class="mla">SCORE</div><div class="mval sb" style="color:#d47a53">32</div></div>
+          </div>
+        </div>
+        <div class="tc" style="animation-delay:0.48s;border-color:rgba(26,37,64,0.8)">
+          <div class="th">
+            <div class="thl">
+              <div class="coin-wrap"><div class="coin-fb" style="background:#131f2e;color:#d47a53">QN</div><img class="ci-img" src="https://coin-images.coingecko.com/coins/images/3370/large/5ZOu7brX_400x400.jpg?1696504070" onerror="this.style.display='none'"></div>
+              <div><span class="ts" style="color:#d47a53">QNT</span> <span class="tn">Quant</span></div>
+            </div>
+            <div class="tb" style="color:#d47a53;background:#d47a5318;border-color:#d47a5333">CAUTION</div>
+          </div>
+          <div class="tp">
+            <span class="pv">$70.52</span>
+            <span class="pc" style="color:#00ffc8">▲ +2.0%</span>
+          </div>
+          <div class="tm">
+            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:61.4%;background:#d47a53"></div></div><div class="mval" style="color:#d47a53">61</div></div>
+            <div class="m"><div class="mla">OBV</div><div class="mval" style="color:#555d75">FLAT</div></div>
+            <div class="m"><div class="mla">SCORE</div><div class="mval sb" style="color:#d47a53">32</div></div>
+          </div>
+        </div></div>
+
+  <div class="fb">
+    <div class="fl">&#9201; NEXT SCAN</div>
+    <div class="fv">6-HOUR &middot; Moderate setups</div>
+  </div>
+  <div class="ft">SIGNALSCANNER v6.1 &middot; NOT FINANCIAL ADVICE</div>
+</div>
+</body>
+</html>
