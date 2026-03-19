@@ -1,17 +1,17 @@
 {
-  "timestamp": "2026-03-19T05:03:49.424961+00:00",
+  "timestamp": "2026-03-19T07:10:55.908389+00:00",
   "market": {
     "fear_greed": {
       "value": 23,
       "label": "Extreme Fear"
     },
     "btc": {
-      "price": 70844,
-      "change_24h": -4.58
+      "price": 70449,
+      "change_24h": -4.67
     },
     "global": {
       "btc_dominance": 56.3,
-      "stablecoin_dominance": 10.49
+      "stablecoin_dominance": 10.51
     },
     "grade": {
       "score": 50,
@@ -20,32 +20,47 @@
       "regime": "RISK-OFF"
     },
     "summary": "Fear at 23 creates buying backdrop.",
-    "analysis": "Mixed signals. Wait-and-see mode for alt buyers. Your watchlist averages 79% off all-time highs. Significant discount from peak. Well below euphoria levels \u2014 this is where you want to accumulate. Deepest discounts: IOTA (99% off), LINK (83% off), XDC (83% off), HBAR (83% off), ONDO (88% off), XLM (81% off), QNT (82% off). Fear at 23 is elevated. Good DCA backdrop. BTC dom 56.3% elevated. BTC still absorbing most inflows. OBV accumulation in IOTA, LINK \u2014 smart money building positions. BOTTOM LINE: 7 actionable \u2014 IOTA, LINK, XDC, HBAR, ONDO, XLM, QNT. Deep discount + favorable conditions = asymmetric setup."
+    "analysis": "Mixed signals. Wait-and-see mode for alt buyers. Your watchlist averages 79% off all-time highs. Significant discount from peak. Well below euphoria levels \u2014 this is where you want to accumulate. Deepest discounts: XDC (83% off), IOTA (99% off), LINK (83% off), HBAR (83% off), ONDO (88% off), QNT (82% off), XLM (81% off). Fear at 23 is elevated. Good DCA backdrop. BTC dom 56.3% elevated. BTC still absorbing most inflows. OBV accumulation in XDC, LINK \u2014 smart money building positions. BOTTOM LINE: 7 actionable \u2014 XDC, IOTA, LINK, HBAR, ONDO, QNT, XLM. Deep discount + favorable conditions = asymmetric setup."
   },
   "tokens": [
     {
+      "symbol": "XDC",
+      "price": 0.03247125,
+      "change_24h": -4.74,
+      "image": "https://coin-images.coingecko.com/coins/images/2912/large/xdc-icon.png?1696503661",
+      "ath": 0.192754,
+      "ath_change_pct": -83.2,
+      "rsi": 42.8,
+      "obv_signal": "ACCUMULATING",
+      "ath_score": 92,
+      "rsi_score": 50,
+      "obv_score": 90,
+      "raw_score": 83,
+      "composite": 83
+    },
+    {
       "symbol": "IOTA",
-      "price": 0.063495,
-      "change_24h": -4.91,
+      "price": 0.062668,
+      "change_24h": -5.75,
       "image": "https://coin-images.coingecko.com/coins/images/692/large/IOTA_Thumbnail_%281%29.png?1743772896",
       "ath": 5.25,
       "ath_change_pct": -98.8,
-      "rsi": 43.2,
-      "obv_signal": "ACCUMULATING",
+      "rsi": 41.2,
+      "obv_signal": "DISTRIBUTING",
       "ath_score": 100,
       "rsi_score": 50,
-      "obv_score": 90,
-      "raw_score": 89,
-      "composite": 89
+      "obv_score": 10,
+      "raw_score": 81,
+      "composite": 81
     },
     {
       "symbol": "LINK",
-      "price": 9.19,
-      "change_24h": -6.55,
+      "price": 9.15,
+      "change_24h": -6.66,
       "image": "https://coin-images.coingecko.com/coins/images/877/large/Chainlink_Logo_500.png?1760023405",
       "ath": 52.7,
       "ath_change_pct": -82.6,
-      "rsi": 51.6,
+      "rsi": 51.0,
       "obv_signal": "ACCUMULATING",
       "ath_score": 92,
       "rsi_score": 35,
@@ -54,28 +69,13 @@
       "composite": 80
     },
     {
-      "symbol": "XDC",
-      "price": 0.03203135,
-      "change_24h": -5.39,
-      "image": "https://coin-images.coingecko.com/coins/images/2912/large/xdc-icon.png?1696503661",
-      "ath": 0.192754,
-      "ath_change_pct": -83.4,
-      "rsi": 40.6,
-      "obv_signal": "NEUTRAL",
-      "ath_score": 92,
-      "rsi_score": 50,
-      "obv_score": 50,
-      "raw_score": 79,
-      "composite": 79
-    },
-    {
       "symbol": "HBAR",
-      "price": 0.095299,
-      "change_24h": -4.6,
+      "price": 0.094479,
+      "change_24h": -4.92,
       "image": "https://coin-images.coingecko.com/coins/images/3688/large/hbar.png?1696504364",
       "ath": 0.569229,
-      "ath_change_pct": -83.3,
-      "rsi": 44.2,
+      "ath_change_pct": -83.4,
+      "rsi": 42.6,
       "obv_signal": "DISTRIBUTING",
       "ath_score": 92,
       "rsi_score": 50,
@@ -85,12 +85,12 @@
     },
     {
       "symbol": "ONDO",
-      "price": 0.265869,
-      "change_24h": -5.74,
+      "price": 0.26339,
+      "change_24h": -6.19,
       "image": "https://coin-images.coingecko.com/coins/images/26580/large/ONDO.png?1696525656",
       "ath": 2.14,
-      "ath_change_pct": -87.6,
-      "rsi": 49.1,
+      "ath_change_pct": -87.7,
+      "rsi": 47.9,
       "obv_signal": "DISTRIBUTING",
       "ath_score": 92,
       "rsi_score": 50,
@@ -99,13 +99,28 @@
       "composite": 75
     },
     {
+      "symbol": "QNT",
+      "price": 74.99,
+      "change_24h": 5.73,
+      "image": "https://coin-images.coingecko.com/coins/images/3370/large/5ZOu7brX_400x400.jpg?1696504070",
+      "ath": 427.42,
+      "ath_change_pct": -82.5,
+      "rsi": 68.8,
+      "obv_signal": "NEUTRAL",
+      "ath_score": 92,
+      "rsi_score": 20,
+      "obv_score": 50,
+      "raw_score": 73,
+      "composite": 73
+    },
+    {
       "symbol": "XLM",
-      "price": 0.168722,
-      "change_24h": -3.71,
+      "price": 0.16787,
+      "change_24h": -4.13,
       "image": "https://coin-images.coingecko.com/coins/images/100/large/fmpFRHHQ_400x400.jpg?1735231350",
       "ath": 0.875563,
-      "ath_change_pct": -80.7,
-      "rsi": 55.1,
+      "ath_change_pct": -80.8,
+      "rsi": 54.1,
       "obv_signal": "DISTRIBUTING",
       "ath_score": 92,
       "rsi_score": 35,
@@ -114,28 +129,13 @@
       "composite": 72
     },
     {
-      "symbol": "QNT",
-      "price": 76.07,
-      "change_24h": 7.77,
-      "image": "https://coin-images.coingecko.com/coins/images/3370/large/5ZOu7brX_400x400.jpg?1696504070",
-      "ath": 427.42,
-      "ath_change_pct": -82.2,
-      "rsi": 70.3,
-      "obv_signal": "NEUTRAL",
-      "ath_score": 92,
-      "rsi_score": 10,
-      "obv_score": 50,
-      "raw_score": 71,
-      "composite": 71
-    },
-    {
       "symbol": "XRP",
       "price": 1.47,
-      "change_24h": -3.96,
+      "change_24h": -3.49,
       "image": "https://coin-images.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png?1696501442",
       "ath": 3.65,
-      "ath_change_pct": -59.8,
-      "rsi": 53.3,
+      "ath_change_pct": -59.7,
+      "rsi": 53.5,
       "obv_signal": "NEUTRAL",
       "ath_score": 60,
       "rsi_score": 35,
@@ -145,12 +145,12 @@
     },
     {
       "symbol": "ETH",
-      "price": 2194.5,
-      "change_24h": -5.8,
+      "price": 2180.61,
+      "change_24h": -5.98,
       "image": "https://coin-images.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
       "ath": 4946.05,
-      "ath_change_pct": -55.6,
-      "rsi": 57.3,
+      "ath_change_pct": -55.9,
+      "rsi": 56.3,
       "obv_signal": "DISTRIBUTING",
       "ath_score": 60,
       "rsi_score": 35,
