@@ -118,8 +118,8 @@ def get_token_data():
                 }
     return result
  
-def get_market_chart(cg_id, days=200):
-    """Fetch price + volume history. 200 days needed for 155MA and 140MA."""
+def get_market_chart(cg_id, days=365):
+    """Fetch price + volume history. 365 days captures full cycle high."""
     data = fetch_json(f"https://api.coingecko.com/api/v3/coins/{cg_id}/market_chart?vs_currency=usd&days={days}&interval=daily")
     if data and "prices" in data and "total_volumes" in data:
         p = [x[1] for x in data["prices"]]
@@ -165,6 +165,15 @@ def compute_sma(prices, period):
     """Compute simple moving average from the last N prices."""
     if len(prices) < period: return None
     return sum(prices[-period:]) / period
+ 
+def compute_cycle_high(prices):
+    """Compute cycle high (max price in window) and current discount."""
+    if not prices: return 0, 0
+    cycle_high = max(prices)
+    current = prices[-1]
+    if cycle_high == 0: return 0, 0
+    pct_off = ((current - cycle_high) / cycle_high) * 100
+    return round(cycle_high, 6), round(pct_off, 1)
  
  
 # ═══════════════════════════════════════════════════════════════
@@ -404,18 +413,19 @@ def recommend_freq(tokens):
  
 def generate_analysis(fg, btc, gd, grade, btc_mom, btc_risk, tokens):
     actionable = [t for t in tokens if t["composite"] >= ALERT_THRESHOLD]
-    btc_off = abs(btc.get("ath_change_pct", 0))
+    btc_off = abs(btc.get("cycle_high_pct", btc.get("ath_change_pct", 0)))
+    btc_ch = btc.get("cycle_high", btc.get("ath", 0))
     lines = []
  
     # BTC cycle position
     if btc_off >= 50:
-        lines.append(f"Bitcoin is {btc_off:.0f}% off its ${btc['ath']:,.0f} cycle high. Deep bear territory.")
+        lines.append(f"Bitcoin is {btc_off:.0f}% off its ${btc_ch:,.0f} cycle high. Deep bear territory.")
     elif btc_off >= 30:
-        lines.append(f"Bitcoin is {btc_off:.0f}% off its ${btc['ath']:,.0f} cycle high. Significant correction.")
+        lines.append(f"Bitcoin is {btc_off:.0f}% off its ${btc_ch:,.0f} cycle high. Significant correction.")
     elif btc_off >= 15:
-        lines.append(f"Bitcoin is {btc_off:.0f}% off its high. Meaningful pullback.")
+        lines.append(f"Bitcoin is {btc_off:.0f}% off its cycle high. Meaningful pullback.")
     else:
-        lines.append(f"Bitcoin is only {btc_off:.0f}% off its high. Limited asymmetry.")
+        lines.append(f"Bitcoin is only {btc_off:.0f}% off its cycle high. Limited asymmetry.")
  
     # Momentum
     mom_status = btc_mom.get("status", "UNKNOWN")
@@ -459,7 +469,7 @@ def generate_analysis(fg, btc, gd, grade, btc_mom, btc_risk, tokens):
 def gen_summary(fg, btc_off, mom_status, risk_label, risk_score):
     parts = []
     parts.append(f"Risk {risk_score}/100 ({risk_label})")
-    parts.append(f"BTC {btc_off:.0f}% off ATH")
+    parts.append(f"BTC {btc_off:.0f}% off cycle high")
     if fg["value"] <= 30: parts.append(f"F&G {fg['value']} (fear)")
     elif fg["value"] >= 60: parts.append(f"F&G {fg['value']} (greed)")
     return ". ".join(parts) + "."
@@ -552,7 +562,8 @@ def generate_dashboard(fg, btc, gd, grade, btc_mom, btc_risk, tokens, freq, summ
         return "#e84057"
  
     gc = sc(grade["score"])
-    btc_off = abs(btc.get("ath_change_pct", 0))
+    btc_off = abs(btc.get("cycle_high_pct", btc.get("ath_change_pct", 0)))
+    btc_cycle_high_val = btc.get("cycle_high", btc.get("ath", 0))
     rs = btc_risk["composite_final"]
     risk_color = rc(rs)
     rl = btc_risk["label"]
@@ -586,11 +597,11 @@ def generate_dashboard(fg, btc, gd, grade, btc_mom, btc_risk, tokens, freq, summ
         name = TOKENS.get(cg_id, {}).get("name", t["symbol"])
         fb_letters = t["symbol"][:2]
         border_color = "rgba(0,255,200,0.15)" if t["composite"] >= 65 else "rgba(26,37,64,0.8)"
-        ath_pct = abs(t.get("ath_change_pct", 0))
-        ath_val = t.get("ath", 0)
-        ath_c = dsc(t.get("ath_change_pct", 0))
-        ath_bar_w = min(100, ath_pct)
-        ath_price = fp(ath_val) if ath_val else "?"
+        cycle_pct = abs(t.get("cycle_high_pct", t.get("ath_change_pct", 0)))
+        cycle_val = t.get("cycle_high", t.get("ath", 0))
+        cycle_c = dsc(t.get("cycle_high_pct", t.get("ath_change_pct", 0)))
+        cycle_bar_w = min(100, cycle_pct)
+        cycle_price = fp(cycle_val) if cycle_val else "?"
  
         # Token risk
         tr = t.get("risk", {})
@@ -612,11 +623,11 @@ def generate_dashboard(fg, btc, gd, grade, btc_mom, btc_risk, tokens, freq, summ
             <span class="pc" style="color:{chc}">{arrow} {t["change_24h"]:+.1f}%</span>
           </div>
           <div class="ath-row">
-            <div class="ath-label">ATH DISCOUNT</div>
-            <div class="ath-bar-bg"><div class="ath-bar" style="width:{ath_bar_w}%;background:{ath_c}"></div></div>
-            <div class="ath-val" style="color:{ath_c}">{ath_pct:.0f}% off</div>
+            <div class="ath-label">CYCLE DISCOUNT</div>
+            <div class="ath-bar-bg"><div class="ath-bar" style="width:{cycle_bar_w}%;background:{cycle_c}"></div></div>
+            <div class="ath-val" style="color:{cycle_c}">{cycle_pct:.0f}% off</div>
           </div>
-          <div class="ath-detail">ATH {ath_price}</div>
+          <div class="ath-detail">Cycle High {cycle_price}</div>
           <div class="tm">
             <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:{rp}%;background:{tc}"></div></div><div class="mval" style="color:{tc}">{rsi_display}</div></div>
             <div class="m"><div class="mla">OBV</div><div class="mval" style="color:{obc}">{ol}</div></div>
@@ -632,8 +643,8 @@ def generate_dashboard(fg, btc, gd, grade, btc_mom, btc_risk, tokens, freq, summ
         for t in actionable:
             tc = sc(t["composite"])
             rsi_display = fmt(t["rsi"])
-            ath_pct = abs(t.get("ath_change_pct", 0))
-            items += f'<div class="ti"><span class="tis" style="color:{tc}">{t["symbol"]}</span><span class="tic" style="color:{tc}">Score {t["composite"]}</span><span class="tid">{ath_pct:.0f}% off ATH \u00b7 RSI {rsi_display}</span></div>'
+            ch_pct = abs(t.get("cycle_high_pct", t.get("ath_change_pct", 0)))
+            items += f'<div class="ti"><span class="tis" style="color:{tc}">{t["symbol"]}</span><span class="tic" style="color:{tc}">Score {t["composite"]}</span><span class="tid">{ch_pct:.0f}% off cycle high \u00b7 RSI {rsi_display}</span></div>'
         tgt = f'<div class="sl" style="color:#00ffc8">\u26a1 TARGETS DETECTED</div><div class="tg2">{items}</div>'
  
     fc = "#e84057" if fg["value"]<=25 else "#d47a53" if fg["value"]<=45 else "#d4a853" if fg["value"]<=55 else "#7ae8c4" if fg["value"]<=75 else "#00ffc8"
@@ -783,9 +794,9 @@ body{{background:#060a14;color:#c8cfe0;font-family:'Outfit',sans-serif;min-heigh
   <div class="sl">MARKET CONDITIONS</div>
   <div class="mg">
     <div class="mc">
-      <div class="ml">&#8383; BTC vs ATH</div>
+      <div class="ml">&#8383; BTC vs CYCLE HIGH</div>
       <div class="mv" style="color:{btc_disc_color}">{btc_off:.0f}% off</div>
-      <div class="ms">${btc["price"]:,.0f} &middot; ATH ${btc["ath"]:,.0f}</div>
+      <div class="ms">${btc["price"]:,.0f} &middot; High ${btc_cycle_high_val:,.0f}</div>
     </div>
     <div class="mc">
       <div class="ml">&#129504; FEAR &amp; GREED</div>
@@ -859,28 +870,35 @@ def run_scan():
  
     time.sleep(1.5)
     btc = get_btc_data()
-    btc_off = abs(btc.get("ath_change_pct", 0))
-    print(f"  BTC: ${btc['price']:,.2f} ({btc['change_24h']:+.1f}%) | ATH ${btc['ath']:,.0f} | {btc_off:.1f}% off")
+    print(f"  BTC: ${btc['price']:,.2f} ({btc['change_24h']:+.1f}%) | CoinGecko ATH ${btc['ath']:,.0f}")
  
-    # --- Fetch BTC 200-day history (for momentum + risk thermometer) ---
+    # --- Fetch BTC 365-day history (for momentum + risk thermometer + cycle high) ---
     time.sleep(1.5)
-    print("Fetching BTC 200-day history...")
-    btc_prices, btc_volumes = get_market_chart("bitcoin", 200)
+    print("Fetching BTC 365-day history...")
+    btc_prices, btc_volumes = get_market_chart("bitcoin", 365)
     print(f"  Got {len(btc_prices)} daily prices")
  
     btc_mom = compute_btc_momentum(btc_prices)
     print(f"  Momentum: {btc_mom['status']} ({btc_mom['pct_vs_ma']:+.1f}% vs 20MA)")
  
-    # --- BTC Risk Thermometer ---
-    btc_risk = compute_risk_thermometer(btc.get("ath_change_pct", 0), btc_prices, fg["value"])
+    # --- BTC Cycle High (365-day max, not all-time) ---
+    btc_cycle_high, btc_cycle_pct = compute_cycle_high(btc_prices)
+    btc_off = abs(btc_cycle_pct)
+    btc["cycle_high"] = btc_cycle_high
+    btc["cycle_high_pct"] = btc_cycle_pct
+    print(f"  Cycle High: ${btc_cycle_high:,.0f} | {btc_off:.1f}% off")
+    print(f"  CoinGecko ATH: ${btc['ath']:,.0f} (reference only)")
+ 
+    # --- BTC Risk Thermometer (uses cycle high) ---
+    btc_risk = compute_risk_thermometer(btc_cycle_pct, btc_prices, fg["value"])
     print(f"  Risk: {btc_risk['composite_final']}/100 ({btc_risk['label']}) | Regime: {btc_risk['regime']} ({btc_risk['regime_multiplier']}x)")
     if btc_risk["sth_mvrv_ratio"]:
         print(f"  STH-MVRV proxy: {btc_risk['sth_mvrv_ratio']:.3f} | 155MA: ${btc_risk['ma155_value']:,.0f}")
     if btc_risk["ma140_value"]:
         print(f"  140MA (20WMA): ${btc_risk['ma140_value']:,.0f} | Rising: {btc_risk['ma140_rising']}")
  
-    # --- Buy-side market grade ---
-    grade = market_grade(btc.get("ath_change_pct", 0), fg["value"], btc_mom)
+    # --- Buy-side market grade (uses cycle high) ---
+    grade = market_grade(btc_cycle_pct, fg["value"], btc_mom)
     print(f"  Buy Grade: {grade['grade']} ({grade['score']}/100) -> {grade['multiplier']}x")
  
     summary = gen_summary(fg, btc_off, btc_mom.get("status", "UNKNOWN"), btc_risk["label"], btc_risk["composite_final"])
@@ -896,16 +914,19 @@ def run_scan():
         sym = info["symbol"]
         print(f"  {sym}...", end=" ")
         time.sleep(1.5)
-        hp, hv = get_market_chart(cg_id, 200)
+        hp, hv = get_market_chart(cg_id, 365)
         rsi = compute_rsi(hp)
         obv = compute_obv_signal(hp, hv)
         td = token_data.get(sym, {"price": 0, "change_24h": 0, "image": "", "ath": 0, "ath_change_pct": 0})
  
-        # Buy score
-        scores = token_buy_score(td.get("ath_change_pct", 0), rsi, obv, grade["multiplier"])
+        # Cycle high from 365-day window (not CoinGecko ATH)
+        cycle_high, cycle_pct = compute_cycle_high(hp) if hp else (0, 0)
  
-        # Token-level risk thermometer
-        token_risk = compute_risk_thermometer(td.get("ath_change_pct", 0), hp, fg["value"]) if len(hp) >= 50 else {"composite_final": 0, "label": "?", "regime": "unknown", "sth_mvrv_ratio": None}
+        # Buy score (uses cycle high discount)
+        scores = token_buy_score(cycle_pct, rsi, obv, grade["multiplier"])
+ 
+        # Token-level risk thermometer (uses cycle high)
+        token_risk = compute_risk_thermometer(cycle_pct, hp, fg["value"]) if len(hp) >= 50 else {"composite_final": 0, "label": "?", "regime": "unknown", "sth_mvrv_ratio": None}
  
         tokens.append({
             "symbol": sym,
@@ -914,6 +935,8 @@ def run_scan():
             "image": td.get("image", ""),
             "ath": td.get("ath", 0),
             "ath_change_pct": td.get("ath_change_pct", 0),
+            "cycle_high": cycle_high,
+            "cycle_high_pct": cycle_pct,
             "rsi": rsi,
             "obv_signal": obv,
             "ath_score": scores["ath_score"],
@@ -923,9 +946,9 @@ def run_scan():
             "composite": scores["composite"],
             "risk": token_risk,
         })
-        ath_off_t = abs(td.get("ath_change_pct", 0))
+        ch_off = abs(cycle_pct)
         tr = token_risk.get("composite_final", 0)
-        print(f"ATH -{ath_off_t:.0f}% RSI={fmt(rsi)} OBV={obv} Buy={scores['composite']} Risk={tr}")
+        print(f"Cycle -{ch_off:.0f}% RSI={fmt(rsi)} OBV={obv} Buy={scores['composite']} Risk={tr}")
  
     tokens.sort(key=lambda x: x["composite"], reverse=True)
     freq = recommend_freq(tokens)
@@ -971,8 +994,8 @@ def run_scan():
     if actionable:
         print(f"\n{len(actionable)} ACTIONABLE:")
         for t in actionable:
-            ath_off_t = abs(t.get("ath_change_pct", 0))
-            print(f"  {t['symbol']} - Buy {t['composite']} | Risk {t['risk'].get('composite_final',0)} ({ath_off_t:.0f}% off ATH)")
+            ch_off = abs(t.get("cycle_high_pct", t.get("ath_change_pct", 0)))
+            print(f"  {t['symbol']} - Buy {t['composite']} | Risk {t['risk'].get('composite_final',0)} ({ch_off:.0f}% off cycle high)")
     else:
         print("No actionable buy setups")
     print("="*60)
