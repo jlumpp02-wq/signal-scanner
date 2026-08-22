@@ -25,7 +25,7 @@ body{background:#060a14;color:#c8cfe0;font-family:'Outfit',sans-serif;min-height
 .thermo-title{font-size:9px;letter-spacing:2px;color:#3d465e;font-family:'JetBrains Mono',monospace;margin-bottom:10px;text-align:center}
 .thermo-bar{height:8px;background:#151d30;border-radius:4px;position:relative;overflow:visible;margin:0 4px}
 .thermo-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#00ffc8 0%,#7ae8c4 25%,#d4a853 50%,#d47a53 75%,#e84057 100%);opacity:0.3}
-.thermo-marker{position:absolute;top:-4px;width:4px;height:16px;background:#7ae8c4;border-radius:2px;left:24%;transform:translateX(-50%);box-shadow:0 0 8px #7ae8c488}
+.thermo-marker{position:absolute;top:-4px;width:4px;height:16px;background:#7ae8c4;border-radius:2px;left:30%;transform:translateX(-50%);box-shadow:0 0 8px #7ae8c488}
 .thermo-labels{display:flex;justify-content:space-between;margin-top:6px;font-size:8px;font-family:'JetBrains Mono',monospace;color:#3d465e;letter-spacing:0.5px}
 .thermo-reading{text-align:center;margin-top:10px;font-family:'JetBrains Mono',monospace}
 .thermo-score{font-size:28px;font-weight:800;color:#7ae8c4}
@@ -96,12 +96,12 @@ body{background:#060a14;color:#c8cfe0;font-family:'Outfit',sans-serif;min-height
         <div class="ring"><div class="gl" style="color:#d4a853">B</div><div class="gl-sub">BUY</div></div>
       </div>
       <div>
-        <div class="ring-r"><div class="gl" style="color:#7ae8c4">24</div><div class="gl-sub">RISK</div></div>
+        <div class="ring-r"><div class="gl" style="color:#7ae8c4">30</div><div class="gl-sub">RISK</div></div>
       </div>
     </div>
-    <div class="gm">Buy <b>64</b>/100 · 1.0x &nbsp;|&nbsp; Risk <b style="color:#7ae8c4">24</b>/100 · ACCUMULATION</div>
-    <div class="sum">Risk 24/100 (ACCUMULATION). BTC 38% off cycle high.</div>
-    <div class="st">Aug 22, 2026 · 15:27 UTC</div>
+    <div class="gm">Buy <b>50</b>/100 · 1.0x &nbsp;|&nbsp; Risk <b style="color:#7ae8c4">30</b>/100 · ACCUMULATION</div>
+    <div class="sum">Risk 30/100 (ACCUMULATION). BTC 38% off cycle high. F&G 71 (greed).</div>
+    <div class="st">Aug 22, 2026 · 20:29 UTC</div>
   </div>
  
   <div class="thermo">
@@ -112,21 +112,21 @@ body{background:#060a14;color:#c8cfe0;font-family:'Outfit',sans-serif;min-height
     </div>
     <div class="thermo-labels"><span>DEEP VALUE</span><span>ACCUMULATE</span><span>NEUTRAL</span><span>WARMING</span><span>ELEVATED</span><span>DISTRIB</span></div>
     <div class="thermo-reading">
-      <div class="thermo-score">24</div>
+      <div class="thermo-score">30</div>
       <div class="thermo-label">ACCUMULATION</div>
       <div class="regime-badge">BULL STRONG</div>
     </div>
     <div class="risk-signals">
       <div class="rs"><div class="rs-l">ATH PROX</div><div class="rs-v" style="color:#00ffc8">12</div></div>
       <div class="rs"><div class="rs-l">50MA EXT</div><div class="rs-v" style="color:#e84057">75</div></div>
-      <div class="rs"><div class="rs-l">F&amp;G RISK</div><div class="rs-v" style="color:#00ffc8">18</div></div>
-      <div class="rs"><div class="rs-l">STH-MVRV</div><div class="rs-v" style="color:#d47a53">57</div></div>
+      <div class="rs"><div class="rs-l">F&amp;G RISK</div><div class="rs-v" style="color:#d47a53">55</div></div>
+      <div class="rs"><div class="rs-l">STH-MVRV</div><div class="rs-v" style="color:#d47a53">58</div></div>
     </div>
   </div>
  
   <div class="aw">
     <button class="ab-btn" id="abtn" onclick="var b=document.getElementById('abody');b.classList.toggle('open');document.getElementById('abtn').textContent=b.classList.contains('open')?'\u25b4 HIDE ANALYSIS':'\u25be MARKET ANALYSIS'">&#9662; MARKET ANALYSIS</button>
-    <div class="ab-body" id="abody">Bitcoin is 38% off its $124,740 cycle high. Significant correction. BTC is +16.5% vs 20MA. Bleeding has stopped. Risk thermometer: 24/100 (ACCUMULATION). Regime: BULL STRONG. BOTTOM LINE: 1 actionable — HBAR.</div>
+    <div class="ab-body" id="abody">Bitcoin is 38% off its $124,740 cycle high. Significant correction. BTC is +17.0% vs 20MA. Bleeding has stopped. Risk thermometer: 30/100 (ACCUMULATION). Regime: BULL STRONG. Greed at 71. Worst time for new positions. BOTTOM LINE: No actionable buy setups right now.</div>
   </div>
  
   <div class="sl">MARKET CONDITIONS</div>
@@ -134,55 +134,30 @@ body{background:#060a14;color:#c8cfe0;font-family:'Outfit',sans-serif;min-height
     <div class="mc">
       <div class="ml">&#8383; BTC vs CYCLE HIGH</div>
       <div class="mv" style="color:#d47a53">38% off</div>
-      <div class="ms">$76,974 &middot; High $124,740</div>
+      <div class="ms">$77,325 &middot; High $124,740</div>
     </div>
     <div class="mc">
       <div class="ml">&#129504; FEAR &amp; GREED</div>
-      <div class="mv" style="color:#d4a853">50</div>
-      <div class="ms">UNKNOWN</div>
+      <div class="mv" style="color:#7ae8c4">71</div>
+      <div class="ms">GREED</div>
     </div>
     <div class="mc">
       <div class="ml">&#128200; BTC MOMENTUM</div>
       <div class="mv" style="color:#00ffc8;font-size:18px">▲ RECOVERING</div>
-      <div class="ms">20MA $66,055 &middot; +16.5%</div>
+      <div class="ms">20MA $66,073 &middot; +17.0%</div>
     </div>
     <div class="mc">
       <div class="ml">&#128201; STH-MVRV PROXY</div>
-      <div class="mv" style="color:#d4a853;font-size:18px">1.11x</div>
-      <div class="ms">155MA $69,011</div>
+      <div class="mv" style="color:#d4a853;font-size:18px">1.12x</div>
+      <div class="ms">155MA $69,014</div>
     </div>
   </div>
  
-  <div class="sl" style="color:#00ffc8">⚡ TARGETS DETECTED</div><div class="tg2"><div class="ti"><span class="tis" style="color:#7ae8c4">HBAR</span><span class="tic" style="color:#7ae8c4">Score 66</span><span class="tid">70% off cycle high · RSI 65</span></div></div>
+  
  
-  <div class="sl">UTILITY TOKEN SIGNALS &middot; 1 ACTIONABLE</div>
+  <div class="sl">UTILITY TOKEN SIGNALS &middot; 0 ACTIONABLE</div>
   <div class="tg">
-        <div class="tc" style="animation-delay:0.0s;border-color:rgba(0,255,200,0.15)">
-          <div class="th">
-            <div class="thl">
-              <div class="coin-wrap"><div class="coin-fb" style="background:#131f2e;color:#7ae8c4">HB</div><img class="ci-img" src="https://coin-images.coingecko.com/coins/images/3688/large/hbar.png?1696504364" onerror="this.style.display='none'"></div>
-              <div><span class="ts" style="color:#7ae8c4">HBAR</span> <span class="tn">Hedera</span></div>
-            </div>
-            <div class="tb" style="color:#7ae8c4;background:#7ae8c418;border-color:#7ae8c433">ACCUMULATE</div>
-          </div>
-          <div class="tp">
-            <span class="pv">$0.0761</span>
-            <span class="pc" style="color:#e84057">▼ -1.7%</span>
-          </div>
-          <div class="ath-row">
-            <div class="ath-label">CYCLE DISCOUNT</div>
-            <div class="ath-bar-bg"><div class="ath-bar" style="width:70.4%;background:#7ae8c4"></div></div>
-            <div class="ath-val" style="color:#7ae8c4">70% off</div>
-          </div>
-          <div class="ath-detail">Cycle High $0.2567</div>
-          <div class="tm">
-            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:64.6%;background:#7ae8c4"></div></div><div class="mval" style="color:#7ae8c4">65</div></div>
-            <div class="m"><div class="mla">OBV</div><div class="mval" style="color:#555d75">FLAT</div></div>
-            <div class="m"><div class="mla">BUY</div><div class="mval sb" style="color:#7ae8c4">66</div></div>
-            <div class="m"><div class="mla">RISK</div><div class="mval" style="color:#7ae8c4;font-size:13px">26</div></div>
-          </div>
-        </div>
-        <div class="tc" style="animation-delay:0.06s;border-color:rgba(26,37,64,0.8)">
+        <div class="tc" style="animation-delay:0.0s;border-color:rgba(26,37,64,0.8)">
           <div class="th">
             <div class="thl">
               <div class="coin-wrap"><div class="coin-fb" style="background:#131f2e;color:#d4a853">IO</div><img class="ci-img" src="https://coin-images.coingecko.com/coins/images/692/large/IOTA_Thumbnail_%281%29.png?1743772896" onerror="this.style.display='none'"></div>
@@ -191,23 +166,23 @@ body{background:#060a14;color:#c8cfe0;font-family:'Outfit',sans-serif;min-height
             <div class="tb" style="color:#d4a853;background:#d4a85318;border-color:#d4a85333">NEUTRAL</div>
           </div>
           <div class="tp">
-            <span class="pv">$0.0446</span>
-            <span class="pc" style="color:#00ffc8">▲ +7.9%</span>
+            <span class="pv">$0.0455</span>
+            <span class="pc" style="color:#00ffc8">▲ +9.5%</span>
           </div>
           <div class="ath-row">
             <div class="ath-label">CYCLE DISCOUNT</div>
-            <div class="ath-bar-bg"><div class="ath-bar" style="width:78.9%;background:#7ae8c4"></div></div>
-            <div class="ath-val" style="color:#7ae8c4">79% off</div>
+            <div class="ath-bar-bg"><div class="ath-bar" style="width:78.5%;background:#7ae8c4"></div></div>
+            <div class="ath-val" style="color:#7ae8c4">78% off</div>
           </div>
           <div class="ath-detail">Cycle High $0.2120</div>
           <div class="tm">
-            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:78.7%;background:#d4a853"></div></div><div class="mval" style="color:#d4a853">79</div></div>
+            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:79.8%;background:#d4a853"></div></div><div class="mval" style="color:#d4a853">80</div></div>
             <div class="m"><div class="mla">OBV</div><div class="mval" style="color:#555d75">FLAT</div></div>
             <div class="m"><div class="mla">BUY</div><div class="mval sb" style="color:#d4a853">64</div></div>
-            <div class="m"><div class="mla">RISK</div><div class="mval" style="color:#d4a853;font-size:13px">43</div></div>
+            <div class="m"><div class="mla">RISK</div><div class="mval" style="color:#d47a53;font-size:13px">57</div></div>
           </div>
         </div>
-        <div class="tc" style="animation-delay:0.12s;border-color:rgba(26,37,64,0.8)">
+        <div class="tc" style="animation-delay:0.06s;border-color:rgba(26,37,64,0.8)">
           <div class="th">
             <div class="thl">
               <div class="coin-wrap"><div class="coin-fb" style="background:#131f2e;color:#d4a853">ON</div><img class="ci-img" src="https://coin-images.coingecko.com/coins/images/26580/large/ONDO.png?1696525656" onerror="this.style.display='none'"></div>
@@ -216,20 +191,45 @@ body{background:#060a14;color:#c8cfe0;font-family:'Outfit',sans-serif;min-height
             <div class="tb" style="color:#d4a853;background:#d4a85318;border-color:#d4a85333">NEUTRAL</div>
           </div>
           <div class="tp">
-            <span class="pv">$0.3661</span>
-            <span class="pc" style="color:#e84057">▼ -3.0%</span>
+            <span class="pv">$0.3748</span>
+            <span class="pc" style="color:#e84057">▼ -0.7%</span>
           </div>
           <div class="ath-row">
             <div class="ath-label">CYCLE DISCOUNT</div>
-            <div class="ath-bar-bg"><div class="ath-bar" style="width:66.7%;background:#7ae8c4"></div></div>
-            <div class="ath-val" style="color:#7ae8c4">67% off</div>
+            <div class="ath-bar-bg"><div class="ath-bar" style="width:66.0%;background:#7ae8c4"></div></div>
+            <div class="ath-val" style="color:#7ae8c4">66% off</div>
           </div>
           <div class="ath-detail">Cycle High $1.10</div>
           <div class="tm">
-            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:53.79999999999999%;background:#d4a853"></div></div><div class="mval" style="color:#d4a853">54</div></div>
+            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:56.10000000000001%;background:#d4a853"></div></div><div class="mval" style="color:#d4a853">56</div></div>
             <div class="m"><div class="mla">OBV</div><div class="mval" style="color:#555d75">FLAT</div></div>
             <div class="m"><div class="mla">BUY</div><div class="mval sb" style="color:#d4a853">62</div></div>
-            <div class="m"><div class="mla">RISK</div><div class="mval" style="color:#00ffc8;font-size:13px">13</div></div>
+            <div class="m"><div class="mla">RISK</div><div class="mval" style="color:#00ffc8;font-size:13px">19</div></div>
+          </div>
+        </div>
+        <div class="tc" style="animation-delay:0.12s;border-color:rgba(26,37,64,0.8)">
+          <div class="th">
+            <div class="thl">
+              <div class="coin-wrap"><div class="coin-fb" style="background:#131f2e;color:#d4a853">HB</div><img class="ci-img" src="https://coin-images.coingecko.com/coins/images/3688/large/hbar.png?1696504364" onerror="this.style.display='none'"></div>
+              <div><span class="ts" style="color:#d4a853">HBAR</span> <span class="tn">Hedera</span></div>
+            </div>
+            <div class="tb" style="color:#d4a853;background:#d4a85318;border-color:#d4a85333">NEUTRAL</div>
+          </div>
+          <div class="tp">
+            <span class="pv">$0.0779</span>
+            <span class="pc" style="color:#00ffc8">▲ +2.1%</span>
+          </div>
+          <div class="ath-row">
+            <div class="ath-label">CYCLE DISCOUNT</div>
+            <div class="ath-bar-bg"><div class="ath-bar" style="width:69.7%;background:#7ae8c4"></div></div>
+            <div class="ath-val" style="color:#7ae8c4">70% off</div>
+          </div>
+          <div class="ath-detail">Cycle High $0.2567</div>
+          <div class="tm">
+            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:69.8%;background:#d4a853"></div></div><div class="mval" style="color:#d4a853">70</div></div>
+            <div class="m"><div class="mla">OBV</div><div class="mval" style="color:#555d75">FLAT</div></div>
+            <div class="m"><div class="mla">BUY</div><div class="mval sb" style="color:#d4a853">59</div></div>
+            <div class="m"><div class="mla">RISK</div><div class="mval" style="color:#d4a853;font-size:13px">48</div></div>
           </div>
         </div>
         <div class="tc" style="animation-delay:0.18s;border-color:rgba(26,37,64,0.8)">
@@ -241,73 +241,23 @@ body{background:#060a14;color:#c8cfe0;font-family:'Outfit',sans-serif;min-height
             <div class="tb" style="color:#d4a853;background:#d4a85318;border-color:#d4a85333">NEUTRAL</div>
           </div>
           <div class="tp">
-            <span class="pv">$0.0292</span>
-            <span class="pc" style="color:#e84057">▼ -0.5%</span>
+            <span class="pv">$0.0291</span>
+            <span class="pc" style="color:#e84057">▼ -0.6%</span>
           </div>
           <div class="ath-row">
             <div class="ath-label">CYCLE DISCOUNT</div>
-            <div class="ath-bar-bg"><div class="ath-bar" style="width:64.9%;background:#7ae8c4"></div></div>
+            <div class="ath-bar-bg"><div class="ath-bar" style="width:65.2%;background:#7ae8c4"></div></div>
             <div class="ath-val" style="color:#7ae8c4">65% off</div>
           </div>
           <div class="ath-detail">Cycle High $0.0834</div>
           <div class="tm">
-            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:65.2%;background:#d4a853"></div></div><div class="mval" style="color:#d4a853">65</div></div>
+            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:63.2%;background:#d4a853"></div></div><div class="mval" style="color:#d4a853">63</div></div>
             <div class="m"><div class="mla">OBV</div><div class="mval" style="color:#555d75">FLAT</div></div>
             <div class="m"><div class="mla">BUY</div><div class="mval sb" style="color:#d4a853">59</div></div>
-            <div class="m"><div class="mla">RISK</div><div class="mval" style="color:#7ae8c4;font-size:13px">29</div></div>
+            <div class="m"><div class="mla">RISK</div><div class="mval" style="color:#d4a853;font-size:13px">40</div></div>
           </div>
         </div>
         <div class="tc" style="animation-delay:0.24s;border-color:rgba(26,37,64,0.8)">
-          <div class="th">
-            <div class="thl">
-              <div class="coin-wrap"><div class="coin-fb" style="background:#131f2e;color:#d4a853">XL</div><img class="ci-img" src="https://coin-images.coingecko.com/coins/images/100/large/fmpFRHHQ_400x400.jpg?1735231350" onerror="this.style.display='none'"></div>
-              <div><span class="ts" style="color:#d4a853">XLM</span> <span class="tn">Stellar</span></div>
-            </div>
-            <div class="tb" style="color:#d4a853;background:#d4a85318;border-color:#d4a85333">NEUTRAL</div>
-          </div>
-          <div class="tp">
-            <span class="pv">$0.1945</span>
-            <span class="pc" style="color:#00ffc8">▲ +3.2%</span>
-          </div>
-          <div class="ath-row">
-            <div class="ath-label">CYCLE DISCOUNT</div>
-            <div class="ath-bar-bg"><div class="ath-bar" style="width:54.1%;background:#d4a853"></div></div>
-            <div class="ath-val" style="color:#d4a853">54% off</div>
-          </div>
-          <div class="ath-detail">Cycle High $0.4245</div>
-          <div class="tm">
-            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:67.2%;background:#d4a853"></div></div><div class="mval" style="color:#d4a853">67</div></div>
-            <div class="m"><div class="mla">OBV</div><div class="mval" style="color:#555d75">FLAT</div></div>
-            <div class="m"><div class="mla">BUY</div><div class="mval sb" style="color:#d4a853">51</div></div>
-            <div class="m"><div class="mla">RISK</div><div class="mval" style="color:#00ffc8;font-size:13px">19</div></div>
-          </div>
-        </div>
-        <div class="tc" style="animation-delay:0.3s;border-color:rgba(26,37,64,0.8)">
-          <div class="th">
-            <div class="thl">
-              <div class="coin-wrap"><div class="coin-fb" style="background:#131f2e;color:#d4a853">ET</div><img class="ci-img" src="https://coin-images.coingecko.com/coins/images/279/large/ethereum.png?1696501628" onerror="this.style.display='none'"></div>
-              <div><span class="ts" style="color:#d4a853">ETH</span> <span class="tn">Ethereum</span></div>
-            </div>
-            <div class="tb" style="color:#d4a853;background:#d4a85318;border-color:#d4a85333">NEUTRAL</div>
-          </div>
-          <div class="tp">
-            <span class="pv">$2,409.34</span>
-            <span class="pc" style="color:#00ffc8">▲ +1.5%</span>
-          </div>
-          <div class="ath-row">
-            <div class="ath-label">CYCLE DISCOUNT</div>
-            <div class="ath-bar-bg"><div class="ath-bar" style="width:50.0%;background:#d4a853"></div></div>
-            <div class="ath-val" style="color:#d4a853">50% off</div>
-          </div>
-          <div class="ath-detail">Cycle High $4,817.76</div>
-          <div class="tm">
-            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:76.7%;background:#d4a853"></div></div><div class="mval" style="color:#d4a853">77</div></div>
-            <div class="m"><div class="mla">OBV</div><div class="mval" style="color:#555d75">FLAT</div></div>
-            <div class="m"><div class="mla">BUY</div><div class="mval sb" style="color:#d4a853">49</div></div>
-            <div class="m"><div class="mla">RISK</div><div class="mval" style="color:#7ae8c4;font-size:13px">28</div></div>
-          </div>
-        </div>
-        <div class="tc" style="animation-delay:0.36s;border-color:rgba(26,37,64,0.8)">
           <div class="th">
             <div class="thl">
               <div class="coin-wrap"><div class="coin-fb" style="background:#131f2e;color:#d4a853">LI</div><img class="ci-img" src="https://coin-images.coingecko.com/coins/images/877/large/Chainlink_Logo_500.png?1760023405" onerror="this.style.display='none'"></div>
@@ -316,23 +266,23 @@ body{background:#060a14;color:#c8cfe0;font-family:'Outfit',sans-serif;min-height
             <div class="tb" style="color:#d4a853;background:#d4a85318;border-color:#d4a85333">NEUTRAL</div>
           </div>
           <div class="tp">
-            <span class="pv">$11.54</span>
-            <span class="pc" style="color:#00ffc8">▲ +2.4%</span>
+            <span class="pv">$11.76</span>
+            <span class="pc" style="color:#00ffc8">▲ +1.7%</span>
           </div>
           <div class="ath-row">
             <div class="ath-label">CYCLE DISCOUNT</div>
-            <div class="ath-bar-bg"><div class="ath-bar" style="width:56.8%;background:#d4a853"></div></div>
-            <div class="ath-val" style="color:#d4a853">57% off</div>
+            <div class="ath-bar-bg"><div class="ath-bar" style="width:56.0%;background:#d4a853"></div></div>
+            <div class="ath-val" style="color:#d4a853">56% off</div>
           </div>
           <div class="ath-detail">Cycle High $26.73</div>
           <div class="tm">
-            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:77.9%;background:#d4a853"></div></div><div class="mval" style="color:#d4a853">78</div></div>
+            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:81.9%;background:#d4a853"></div></div><div class="mval" style="color:#d4a853">82</div></div>
             <div class="m"><div class="mla">OBV</div><div class="mval" style="color:#555d75">FLAT</div></div>
             <div class="m"><div class="mla">BUY</div><div class="mval sb" style="color:#d4a853">49</div></div>
-            <div class="m"><div class="mla">RISK</div><div class="mval" style="color:#7ae8c4;font-size:13px">31</div></div>
+            <div class="m"><div class="mla">RISK</div><div class="mval" style="color:#d4a853;font-size:13px">37</div></div>
           </div>
         </div>
-        <div class="tc" style="animation-delay:0.42s;border-color:rgba(26,37,64,0.8)">
+        <div class="tc" style="animation-delay:0.3s;border-color:rgba(26,37,64,0.8)">
           <div class="th">
             <div class="thl">
               <div class="coin-wrap"><div class="coin-fb" style="background:#131f2e;color:#d4a853">XR</div><img class="ci-img" src="https://coin-images.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png?1696501442" onerror="this.style.display='none'"></div>
@@ -341,23 +291,48 @@ body{background:#060a14;color:#c8cfe0;font-family:'Outfit',sans-serif;min-height
             <div class="tb" style="color:#d4a853;background:#d4a85318;border-color:#d4a85333">NEUTRAL</div>
           </div>
           <div class="tp">
-            <span class="pv">$1.44</span>
-            <span class="pc" style="color:#00ffc8">▲ +3.1%</span>
+            <span class="pv">$1.51</span>
+            <span class="pc" style="color:#00ffc8">▲ +10.1%</span>
           </div>
           <div class="ath-row">
             <div class="ath-label">CYCLE DISCOUNT</div>
-            <div class="ath-bar-bg"><div class="ath-bar" style="width:53.8%;background:#d4a853"></div></div>
-            <div class="ath-val" style="color:#d4a853">54% off</div>
+            <div class="ath-bar-bg"><div class="ath-bar" style="width:51.8%;background:#d4a853"></div></div>
+            <div class="ath-val" style="color:#d4a853">52% off</div>
           </div>
           <div class="ath-detail">Cycle High $3.12</div>
           <div class="tm">
-            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:83.1%;background:#d4a853"></div></div><div class="mval" style="color:#d4a853">83</div></div>
+            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:86.4%;background:#d4a853"></div></div><div class="mval" style="color:#d4a853">86</div></div>
             <div class="m"><div class="mla">OBV</div><div class="mval" style="color:#555d75">FLAT</div></div>
             <div class="m"><div class="mla">BUY</div><div class="mval sb" style="color:#d4a853">49</div></div>
-            <div class="m"><div class="mla">RISK</div><div class="mval" style="color:#d4a853;font-size:13px">39</div></div>
+            <div class="m"><div class="mla">RISK</div><div class="mval" style="color:#d4a853;font-size:13px">48</div></div>
           </div>
         </div>
-        <div class="tc" style="animation-delay:0.48s;border-color:rgba(26,37,64,0.8)">
+        <div class="tc" style="animation-delay:0.36s;border-color:rgba(26,37,64,0.8)">
+          <div class="th">
+            <div class="thl">
+              <div class="coin-wrap"><div class="coin-fb" style="background:#131f2e;color:#d4a853">XL</div><img class="ci-img" src="https://coin-images.coingecko.com/coins/images/100/large/fmpFRHHQ_400x400.jpg?1735231350" onerror="this.style.display='none'"></div>
+              <div><span class="ts" style="color:#d4a853">XLM</span> <span class="tn">Stellar</span></div>
+            </div>
+            <div class="tb" style="color:#d4a853;background:#d4a85318;border-color:#d4a85333">NEUTRAL</div>
+          </div>
+          <div class="tp">
+            <span class="pv">$0.1990</span>
+            <span class="pc" style="color:#00ffc8">▲ +5.2%</span>
+          </div>
+          <div class="ath-row">
+            <div class="ath-label">CYCLE DISCOUNT</div>
+            <div class="ath-bar-bg"><div class="ath-bar" style="width:53.1%;background:#d4a853"></div></div>
+            <div class="ath-val" style="color:#d4a853">53% off</div>
+          </div>
+          <div class="ath-detail">Cycle High $0.4245</div>
+          <div class="tm">
+            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:71.1%;background:#d4a853"></div></div><div class="mval" style="color:#d4a853">71</div></div>
+            <div class="m"><div class="mla">OBV</div><div class="mval" style="color:#555d75">FLAT</div></div>
+            <div class="m"><div class="mla">BUY</div><div class="mval sb" style="color:#d4a853">49</div></div>
+            <div class="m"><div class="mla">RISK</div><div class="mval" style="color:#7ae8c4;font-size:13px">25</div></div>
+          </div>
+        </div>
+        <div class="tc" style="animation-delay:0.42s;border-color:rgba(26,37,64,0.8)">
           <div class="th">
             <div class="thl">
               <div class="coin-wrap"><div class="coin-fb" style="background:#131f2e;color:#d4a853">QN</div><img class="ci-img" src="https://coin-images.coingecko.com/coins/images/3370/large/5ZOu7brX_400x400.jpg?1696504070" onerror="this.style.display='none'"></div>
@@ -366,26 +341,51 @@ body{background:#060a14;color:#c8cfe0;font-family:'Outfit',sans-serif;min-height
             <div class="tb" style="color:#d4a853;background:#d4a85318;border-color:#d4a85333">NEUTRAL</div>
           </div>
           <div class="tp">
-            <span class="pv">$63.35</span>
-            <span class="pc" style="color:#e84057">▼ -0.7%</span>
+            <span class="pv">$63.82</span>
+            <span class="pc" style="color:#00ffc8">▲ +0.5%</span>
           </div>
           <div class="ath-row">
             <div class="ath-label">CYCLE DISCOUNT</div>
-            <div class="ath-bar-bg"><div class="ath-bar" style="width:43.0%;background:#d4a853"></div></div>
+            <div class="ath-bar-bg"><div class="ath-bar" style="width:42.7%;background:#d4a853"></div></div>
             <div class="ath-val" style="color:#d4a853">43% off</div>
           </div>
           <div class="ath-detail">Cycle High $111.05</div>
           <div class="tm">
-            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:57.49999999999999%;background:#d4a853"></div></div><div class="mval" style="color:#d4a853">58</div></div>
+            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:58.5%;background:#d4a853"></div></div><div class="mval" style="color:#d4a853">58</div></div>
             <div class="m"><div class="mla">OBV</div><div class="mval" style="color:#555d75">FLAT</div></div>
             <div class="m"><div class="mla">BUY</div><div class="mval sb" style="color:#d4a853">46</div></div>
-            <div class="m"><div class="mla">RISK</div><div class="mval" style="color:#00ffc8;font-size:13px">18</div></div>
+            <div class="m"><div class="mla">RISK</div><div class="mval" style="color:#7ae8c4;font-size:13px">31</div></div>
+          </div>
+        </div>
+        <div class="tc" style="animation-delay:0.48s;border-color:rgba(26,37,64,0.8)">
+          <div class="th">
+            <div class="thl">
+              <div class="coin-wrap"><div class="coin-fb" style="background:#131f2e;color:#d47a53">ET</div><img class="ci-img" src="https://coin-images.coingecko.com/coins/images/279/large/ethereum.png?1696501628" onerror="this.style.display='none'"></div>
+              <div><span class="ts" style="color:#d47a53">ETH</span> <span class="tn">Ethereum</span></div>
+            </div>
+            <div class="tb" style="color:#d47a53;background:#d47a5318;border-color:#d47a5333">CAUTION</div>
+          </div>
+          <div class="tp">
+            <span class="pv">$2,438.96</span>
+            <span class="pc" style="color:#00ffc8">▲ +1.1%</span>
+          </div>
+          <div class="ath-row">
+            <div class="ath-label">CYCLE DISCOUNT</div>
+            <div class="ath-bar-bg"><div class="ath-bar" style="width:49.4%;background:#d4a853"></div></div>
+            <div class="ath-val" style="color:#d4a853">49% off</div>
+          </div>
+          <div class="ath-detail">Cycle High $4,817.76</div>
+          <div class="tm">
+            <div class="m"><div class="mla">RSI</div><div class="mbg"><div class="mb" style="width:79.6%;background:#d47a53"></div></div><div class="mval" style="color:#d47a53">80</div></div>
+            <div class="m"><div class="mla">OBV</div><div class="mval" style="color:#555d75">FLAT</div></div>
+            <div class="m"><div class="mla">BUY</div><div class="mval sb" style="color:#d47a53">41</div></div>
+            <div class="m"><div class="mla">RISK</div><div class="mval" style="color:#7ae8c4;font-size:13px">34</div></div>
           </div>
         </div></div>
  
   <div class="fb">
     <div class="fl">&#9201; NEXT SCAN</div>
-    <div class="fv">4-HOUR &middot; Signals converging</div>
+    <div class="fv">6-HOUR &middot; Moderate setups</div>
   </div>
   <div class="ft">SIGNALSCANNER v8.0 &middot; NOT FINANCIAL ADVICE</div>
 </div>
